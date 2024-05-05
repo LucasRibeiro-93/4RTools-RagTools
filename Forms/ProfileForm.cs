@@ -77,16 +77,23 @@ namespace _4RTools.Forms
                 MessageBox.Show("Cannot rename a Default profile!");
             }
             string newProfileName;
-            using (InputForm form = new InputForm("Digite o novo nome de perfil:"))
+            using (InputForm form = new InputForm("Input the new profile name:"))
             {
-                if (form.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    newProfileName = form.inputValue;
-                    ProfileSingleton.Rename(selectedProfile, newProfileName);
-                    this.lbProfilesList.Items.Remove(selectedProfile);
-                    this.lbProfilesList.Items.Add(newProfileName);
-                    this.container.refreshProfileList();
-                    this.txtProfileName.Text = ""; // clear text box
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        newProfileName = form.inputValue;
+                        ProfileSingleton.Rename(selectedProfile, newProfileName);
+                        this.lbProfilesList.Items.Remove(selectedProfile);
+                        this.lbProfilesList.Items.Add(newProfileName);
+                        this.container.refreshProfileList();
+                        this.txtProfileName.Text = ""; // clear text box
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }

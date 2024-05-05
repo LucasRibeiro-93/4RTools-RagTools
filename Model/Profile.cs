@@ -83,7 +83,8 @@ namespace _4RTools.Model
                     }
                 }
                 return newFileName;
-            } else
+            } 
+            else
             {
                 throw new Exception("Houve um problema ao carregar o perfil selecionado.");
             }
@@ -105,10 +106,18 @@ namespace _4RTools.Model
 
             if (File.Exists(jsonFileName))
             {
-                File.Move(jsonFileName, newJsonFilename);
-            } else
+                if (!File.Exists(newJsonFilename))
+                {
+                    File.Move(jsonFileName, newJsonFilename);
+                } 
+                else
+                {
+                    throw new Exception("There is already a profile with that name.");
+                }
+            }
+            else
             {
-                throw new Exception("Houve um problema ao carregar o perfil selecionado.");
+                throw new Exception("There was a problem loading the selected profile.");
             }
         }
 
