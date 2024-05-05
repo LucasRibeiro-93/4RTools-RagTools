@@ -59,6 +59,36 @@ namespace _4RTools.Model
             ProfileSingleton.Load(profileName);
         }
 
+        public static string CreateCopy(string profileName)
+        {
+            string fileName = AppConfig.ProfileFolder + profileName;
+            string jsonFileName = fileName + ".json";
+            string newFileName;
+            string newJsonFileName;
+
+            if (File.Exists(jsonFileName))
+            {
+                for (int i = 1; true;  i++)
+                {
+                    try
+                    {
+                        newFileName = fileName + i.ToString();
+                        newJsonFileName = newFileName + ".json";
+                        File.Copy(jsonFileName, newJsonFileName, false);
+                        newFileName = profileName + i.ToString();
+                        break;
+                    } catch (Exception e)
+                    {
+                        continue;
+                    }
+                }
+                return newFileName;
+            } else
+            {
+                throw new Exception("Houve um problema ao carregar o perfil selecionado.");
+            }
+        }
+
         public static void Delete(string profileName)
         {
             try
@@ -66,6 +96,20 @@ namespace _4RTools.Model
                 if (profileName != "Default") { File.Delete(AppConfig.ProfileFolder + profileName + ".json"); }
             }
             catch { }
+        }
+
+        public static void Rename(string profileName, string newProfileName)
+        {
+            string jsonFileName = AppConfig.ProfileFolder + profileName + ".json";
+            string newJsonFilename = AppConfig.ProfileFolder + newProfileName + ".json";
+
+            if (File.Exists(jsonFileName))
+            {
+                File.Move(jsonFileName, newJsonFilename);
+            } else
+            {
+                throw new Exception("Houve um problema ao carregar o perfil selecionado.");
+            }
         }
 
         public static void SetConfiguration(Action action)

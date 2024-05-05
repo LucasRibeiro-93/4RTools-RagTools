@@ -252,6 +252,13 @@
       <DependentUpon>ClientUpdaterForm.cs</DependentUpon>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Compile>
+    <Compile Include="Forms\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </Compile>
     <Compile Include="Forms\MacroSongForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,6 +276,9 @@
     <Compile Include="Forms\MacroSwitchForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Forms\InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MacroSongForm.resx">
       <DependentUpon>MacroSongForm.cs</DependentUpon>
       <SubType>Designer</SubType>
