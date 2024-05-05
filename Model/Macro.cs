@@ -102,7 +102,7 @@ namespace _4RTools.Model
                     for (int i = 1; i <= macro.Count; i++)//Ensure to execute keys in Order
                     {
                         MacroKey macroKey = macro["in" + i + "mac" + chainConfig.id];
-                        if (macroKey.key != Key.None)
+                        if (macroKey.key != Key.None && i != 1)
                         {
                             if(chainConfig.instrumentKey != Key.None)
                             {
