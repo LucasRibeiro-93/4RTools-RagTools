@@ -26,6 +26,8 @@ namespace _4RTools.Utils
         SHIELDSPELL = 1316,
 
         SPIRIT = 1401,
+        SPRINT = 145,
+        KAUPE = 158,
         WARM = 165,
         SUN_COMFORT = 169,
         MOON_COMFORT = 170,
