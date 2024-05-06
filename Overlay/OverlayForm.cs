@@ -52,12 +52,12 @@ namespace OverlayWindowExample
         private void SetupDefaultBuffList()
         {
 	        _trackedBuffs = new List<OverlayBuff>();
-	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.KAUPE, "kaupe.png", false));
-	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke.png", false));
-	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint.png", false));
+	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.KAUPE, "kaupe.png", true));
+	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke.png", true));
+	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint.png", true));
 	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.MADNESSCANCEL, Icons.madnesscancel, true));
-	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.ACCURACY, Icons.increase_accuracy, false));
-	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.E_CHAIN, Icons.e_chain, false));
+	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.ACCURACY, Icons.increase_accuracy, true));
+	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.E_CHAIN, Icons.e_chain, true));
 	        
 	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.PROPERTYGROUND, Icons.tk_mild_earth, true));
 	        _trackedBuffs.Add(new OverlayBuff(EffectStatusIDs.PROPERTYFIRE, Icons.tk_mild_fire, true));
