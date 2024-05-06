@@ -34,6 +34,8 @@
             this.btnRemoveProfile = new System.Windows.Forms.Button();
             this.lblProfilesList = new System.Windows.Forms.Label();
             this.lbProfilesList = new System.Windows.Forms.ListBox();
+            this.btnCopyProfile = new System.Windows.Forms.Button();
+            this.btnRenameProfile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtProfileName
@@ -76,7 +78,7 @@
             this.btnRemoveProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(51)))), ((int)(((byte)(56)))));
             this.btnRemoveProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemoveProfile.ForeColor = System.Drawing.Color.White;
-            this.btnRemoveProfile.Location = new System.Drawing.Point(267, 77);
+            this.btnRemoveProfile.Location = new System.Drawing.Point(267, 106);
             this.btnRemoveProfile.Name = "btnRemoveProfile";
             this.btnRemoveProfile.Size = new System.Drawing.Size(78, 23);
             this.btnRemoveProfile.TabIndex = 3;
@@ -106,12 +108,44 @@
             this.lbProfilesList.Size = new System.Drawing.Size(238, 132);
             this.lbProfilesList.TabIndex = 8;
             // 
+            // btnCopyProfile
+            // 
+            this.btnCopyProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(51)))), ((int)(((byte)(56)))));
+            this.btnCopyProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopyProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnCopyProfile.ForeColor = System.Drawing.Color.White;
+            this.btnCopyProfile.Location = new System.Drawing.Point(267, 77);
+            this.btnCopyProfile.Name = "button1";
+            this.btnCopyProfile.Size = new System.Drawing.Size(78, 23);
+            this.btnCopyProfile.TabIndex = 9;
+            this.btnCopyProfile.Text = "Copy Selected Profile";
+            this.btnCopyProfile.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCopyProfile.UseVisualStyleBackColor = false;
+            this.btnCopyProfile.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnRenameProfile
+            // 
+            this.btnRenameProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(51)))), ((int)(((byte)(56)))));
+            this.btnRenameProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRenameProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.btnRenameProfile.ForeColor = System.Drawing.Color.White;
+            this.btnRenameProfile.Location = new System.Drawing.Point(267, 135);
+            this.btnRenameProfile.Name = "button2";
+            this.btnRenameProfile.Size = new System.Drawing.Size(78, 23);
+            this.btnRenameProfile.TabIndex = 10;
+            this.btnRenameProfile.Text = "Rename Selected Profile";
+            this.btnRenameProfile.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnRenameProfile.UseVisualStyleBackColor = false;
+            this.btnRenameProfile.Click += new System.EventHandler(this.btnRename_Click);
+            // 
             // ProfileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(45)))), ((int)(((byte)(49)))));
             this.ClientSize = new System.Drawing.Size(374, 232);
+            this.Controls.Add(this.btnRenameProfile);
+            this.Controls.Add(this.btnCopyProfile);
             this.Controls.Add(this.lbProfilesList);
             this.Controls.Add(this.lblProfilesList);
             this.Controls.Add(this.btnRemoveProfile);
@@ -135,5 +169,7 @@
         private System.Windows.Forms.Button btnRemoveProfile;
         private System.Windows.Forms.Label lblProfilesList;
         private System.Windows.Forms.ListBox lbProfilesList;
+        private System.Windows.Forms.Button btnCopyProfile;
+        private System.Windows.Forms.Button btnRenameProfile;
     }
 }
