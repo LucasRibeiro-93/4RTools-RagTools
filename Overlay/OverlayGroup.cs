@@ -12,7 +12,8 @@ namespace _4RTools.Overlay
     {
         private Dictionary<uint, OverlayBuff> _trackedBuffs = new Dictionary<uint, OverlayBuff>();
         public Point Position = new Point(); //TODO: Encapsulate this
-        
+
+        public int Size = 24;
         public int Spacing = 26;
 
         internal bool IsDirty;
@@ -78,7 +79,7 @@ namespace _4RTools.Overlay
             {
                 if (!buff.IsActive) continue;
                 
-                var buffPosition = new Point(startPosition.X + paddingX, startPosition.Y + paddingY);
+                var buffPosition = new Rectangle(startPosition.X + paddingX, startPosition.Y + paddingY, Size, Size);
                 
                 e.Graphics.DrawImage(buff.Icon, buffPosition);
                 if (!buff.ShowActive)
