@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace OverlayWindowExample
+namespace _4RTools.Overlay
 {
 	partial class OverlayForm
 	{

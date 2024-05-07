@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using OverlayWindowExample;
+using _4RTools.Overlay;
 
 namespace _4RTools
 {
