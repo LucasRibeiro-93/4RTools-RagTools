@@ -14,7 +14,7 @@ namespace _4RTools.Overlay
         public Point Position = new Point(); //TODO: Encapsulate this
 
         public int Size = 24;
-        public int Spacing = 26;
+        public int Spacing = 2;
 
         internal bool IsDirty;
             
@@ -87,7 +87,7 @@ namespace _4RTools.Overlay
                     e.Graphics.DrawImage(_prohibitedImage, buffPosition);
                 }
                     
-                paddingY -= Spacing; //TODO: Actual layout
+                paddingY -= Size + Spacing; //TODO: Actual layout
             }
 
             IsDirty = false;
