@@ -89,6 +89,9 @@ namespace _4RTools.Overlay
 			        _canvas.IsEnabled = false;
 			        Invalidate();
 			        break;
+		        case MessageCode.PROFILE_CHANGED:
+			        _canvas = ProfileSingleton.GetCurrent().OverlayCanvas;
+			        break;
 	        }
         }
         

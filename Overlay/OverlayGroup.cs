@@ -21,21 +21,15 @@ namespace _4RTools.Overlay
         
         public int MaxElementsX = 3;
         public int MaxElementsY = 5;
+        
+        public List<OverlayBuff> _trackedBuffs = new List<OverlayBuff>();
 
         internal bool IsDirty;
-
-        private OverlayCanvas _canvas;
-        private Dictionary<uint, OverlayBuff> _trackedBuffs = new Dictionary<uint, OverlayBuff>();
         private HashSet<uint> _activeBuffs = new HashSet<uint>();
-
-        public OverlayGroup(OverlayCanvas canvas)
-        {
-            this._canvas = canvas;
-        }
 
         public void AddBuff(OverlayBuff buff)
         {
-            _trackedBuffs.Add(buff.BuffID, buff);
+            _trackedBuffs.Add(buff);
         }
 
         internal void Update(Client roClient)
@@ -50,7 +44,7 @@ namespace _4RTools.Overlay
                 _activeBuffs.Add(activeBuff);
             }
 
-            foreach (var buff in _trackedBuffs.Values)
+            foreach (var buff in _trackedBuffs)
             {
                 buff.Update(_activeBuffs);
                 
@@ -71,7 +65,7 @@ namespace _4RTools.Overlay
             var countX = 0;
             var countY = 0;
 
-            foreach (var buff in _trackedBuffs.Values)
+            foreach (var buff in _trackedBuffs)
             {
                 if (!buff.IsActive) continue;
 
@@ -83,7 +77,7 @@ namespace _4RTools.Overlay
                 e.Graphics.DrawImage(buff.Icon, buffPosition);
                 if (!buff.ShowActive)
                 {
-                    e.Graphics.DrawImage(_canvas.ProhibitedImage, buffPosition);
+                    e.Graphics.DrawImage(OverlayUtils.ProhibitedImage, buffPosition);
                 }
 
                 if (VerticalFirst)

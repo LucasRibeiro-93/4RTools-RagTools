@@ -343,6 +343,12 @@ namespace _4RTools.Forms
         {
             var overlay = new OverlayForm(subject);
             overlay.Show();
+
+            var overlayEditor = new OverlayEditorForm(subject);
+            overlayEditor.FormBorderStyle = FormBorderStyle.None;
+            overlayEditor.MdiParent = this;
+            overlayEditor.Show();
+            addform(this.tabOverlayEditor, overlayEditor);
         }
 
         #endregion

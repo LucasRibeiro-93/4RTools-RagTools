@@ -287,12 +287,21 @@
       <DependentUpon>MacroSwitchForm.cs</DependentUpon>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Compile>
+    <Compile Include="Forms\OverlayEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OverlayEditorForm.Designer.cs">
+      <DependentUpon>OverlayEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ServersForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <EmbeddedResource Include="Forms\MacroSwitchForm.resx">
       <DependentUpon>MacroSwitchForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OverlayEditorForm.resx">
+      <DependentUpon>OverlayEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProfileForm.resx">
       <DependentUpon>ProfileForm.cs</DependentUpon>
@@ -413,6 +422,7 @@
       <DependentUpon>OverlayForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Overlay\OverlayGroup.cs" />
+    <Compile Include="Overlay\OverlayUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

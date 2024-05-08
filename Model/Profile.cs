@@ -4,6 +4,7 @@ using _4RTools.Utils;
 using _4RTools.Forms;
 using System.IO;
 using System;
+using _4RTools.Overlay;
 
 namespace _4RTools.Model
 {
@@ -13,7 +14,7 @@ namespace _4RTools.Model
 
         public static void Load(string profileName)
         {
-            try
+            //try
             {
                 string json = File.ReadAllText(AppConfig.ProfileFolder + profileName + ".json");
                 dynamic rawObject = JsonConvert.DeserializeObject(json);
@@ -34,11 +35,12 @@ namespace _4RTools.Model
                     profile.Custom = JsonConvert.DeserializeObject<Custom>(Profile.GetByAction(rawObject, profile.Custom));
                     profile.DebuffsRecovery = JsonConvert.DeserializeObject<DebuffsRecovery>(Profile.GetByAction(rawObject, profile.DebuffsRecovery));
                     profile.AutoSwitch = JsonConvert.DeserializeObject<AutoSwitch>(Profile.GetByAction(rawObject, profile.AutoSwitch));
+                    profile.OverlayCanvas = JsonConvert.DeserializeObject<OverlayCanvas>(Profile.GetByAction(rawObject, profile.OverlayCanvas));
                 }
             }
-            catch {
-                throw new Exception("Houve um problema ao carregar o perfil. Delete a pasta Profiles e tente novamente.");   
-            }
+            //catch {
+                //throw new Exception("Houve um problema ao carregar o perfil. Delete a pasta Profiles e tente novamente.");   
+            //}
         }
 
         public static void Create(string profileName)
@@ -156,6 +158,8 @@ namespace _4RTools.Model
         public Custom Custom { get; set; }
         public ATKDEFMode AtkDefMode { get; set; }
         public AutoSwitch AutoSwitch { get; set; }
+        
+        public OverlayCanvas OverlayCanvas { get; set; }
 
         public Profile(string name)
         {
@@ -174,6 +178,7 @@ namespace _4RTools.Model
             this.DebuffsRecovery = new DebuffsRecovery();
             this.Custom = new Custom();
             this.AutoSwitch = new AutoSwitch();
+            this.OverlayCanvas = new OverlayCanvas();
         }
 
         public static object GetByAction(dynamic obj, Action action)

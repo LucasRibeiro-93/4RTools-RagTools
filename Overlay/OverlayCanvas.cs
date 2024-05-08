@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using _4RTools.Model;
 using _4RTools.Resources._4RTools;
 using _4RTools.Utils;
+using Newtonsoft.Json;
+using Action = _4RTools.Model.Action;
 
 namespace _4RTools.Overlay
 {
-    public class OverlayCanvas
+    public class OverlayCanvas : Action
     {
+        [NonSerialized]
         public bool IsEnabled;
         
-        public readonly Image ProhibitedImage = Image.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Assets", "Images", "prohibited.png"));
-
-        private List<OverlayGroup> _groups = new List<OverlayGroup>();
+        public List<OverlayGroup> _groups = new List<OverlayGroup>();
 
         public OverlayCanvas()
         {
-            var buffsGroup = new OverlayGroup(this)
+            /*var buffsGroup = new OverlayGroup(this)
             {
                 Position = new Point(36, 0),
                 GrowUp = true,
@@ -45,7 +47,7 @@ namespace _4RTools.Overlay
             elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.ASPERSIO, "tk_mild_holy", true));
             elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, "tk_mild_shadow", true));
 	        
-            _groups.Add(elementGroup);
+            _groups.Add(elementGroup);*/
         }
 
         public bool IsDirty { get; private set; }
@@ -71,6 +73,24 @@ namespace _4RTools.Overlay
             }
 
             IsDirty = false;
+        }
+
+        public void Start()
+        {
+        }
+
+        public void Stop()
+        {
+        }
+
+        public string GetConfiguration()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        public string GetActionName()
+        {
+            return "OverlayCanvas";
         }
     }
 }

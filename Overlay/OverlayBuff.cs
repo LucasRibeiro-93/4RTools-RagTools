@@ -14,24 +14,45 @@ namespace _4RTools.Overlay
 
         internal bool IsActive;
         internal bool WasActiveLastDraw;
-        internal Image Icon;
+        
+        private Image _icon;
 
+        public Image Icon
+        {
+            get
+            {
+                if (_icon == null)
+                {
+                    try
+                    {
+                        _icon = (Image) Icons.ResourceManager.GetObject(IconId);
+                    }
+                    catch
+                    {
+                        var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        var imagePath = Path.Combine(path, "Assets", "Images", IconId);
+                        _icon = Image.FromFile(imagePath);
+                    }
+                }
+
+                return _icon;
+            }
+        }
+
+        public OverlayBuff()
+        {
+            BuffID = uint.MaxValue;
+            ShowActive = true;
+            IconId = "";
+        }
+        
         public OverlayBuff(uint buffId, string iconName, bool showActive)
         {
             BuffID = buffId;
             ShowActive = showActive;
             IconId = iconName;
 
-            try
-            {
-                Icon = (Image) Icons.ResourceManager.GetObject(iconName);
-            }
-            catch
-            {
-                var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                var imagePath = Path.Combine(path, "Assets", "Images", iconName);
-                Icon = Image.FromFile(imagePath);
-            }
+
         }
         
         public OverlayBuff(EffectStatusIDs buffId, string iconName, bool showActive) : this((uint) buffId, iconName, showActive)
