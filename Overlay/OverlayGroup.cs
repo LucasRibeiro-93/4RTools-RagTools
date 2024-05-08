@@ -18,17 +18,7 @@ namespace _4RTools.Overlay
 
         internal bool IsDirty;
             
-        private readonly Image _prohibitedImage;
-
-        public OverlayGroup()
-        {
-            _prohibitedImage = Image.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Assets", "Images", "prohibited.png")); //TODO: load this only once   
-        }
-        
-        public OverlayGroup(int spacing) : this()
-        {
-            Spacing = spacing;
-        }
+        private readonly Image _prohibitedImage = Image.FromFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "Assets", "Images", "prohibited.png")); //TODO: load this only once   
 
         public void AddBuff(OverlayBuff buff)
         {

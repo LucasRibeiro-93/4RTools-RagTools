@@ -10,15 +10,16 @@ using _4RTools.Utils;
 
 namespace _4RTools.Overlay
 {
-	public partial class OverlayForm : Form
+	public partial class OverlayForm : Form, IObserver
     {
         private const int WS_EX_LAYERED = 0x80000;
         private const int WS_EX_TRANSPARENT = 0x20;
         
         private Pen borderPen = new Pen(Color.Red, 2); // Define a red pen for drawing the border
-
+        
         private Client _roClient;
         private OverlayGroup _testGroup;
+        private bool isEnabled;
 
         // Hardcoded bullshit
         private void SetupDefaultBuffList()
@@ -39,7 +40,7 @@ namespace _4RTools.Overlay
 	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, Icons.tk_mild_shadow, true));
         }
 
-        public OverlayForm()
+        public OverlayForm(Subject subject)
         {
             InitializeComponent();
             
@@ -60,6 +61,8 @@ namespace _4RTools.Overlay
             timer.Interval = 100; // Adjust the interval as needed
             timer.Tick += Timer_Tick;
             timer.Start();
+            
+            subject.Attach(this);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -94,14 +97,28 @@ namespace _4RTools.Overlay
 		        Invalidate();
 	        }
         }
-
-        private uint[] _activeBuffs;
+        
+        public void Update(ISubject subject)
+        {
+	        switch ((subject as Subject).Message.code)
+	        {
+		        case MessageCode.TURN_ON:
+			        isEnabled = true;
+			        Invalidate();
+			        break;
+		        case MessageCode.TURN_OFF:
+			        isEnabled = false;
+			        Invalidate();
+			        break;
+	        }
+        }
         
         // Override the OnPaint method to draw a border around the form
         protected override void OnPaint(PaintEventArgs e)
         {
 	        base.OnPaint(e);
 	        
+	        if(!isEnabled) return;
 	        if (_roClient == null) return; //Skip drawing if there is no client
 
 	        _testGroup.Draw(e, ClientRectangle);

@@ -16,8 +16,6 @@ namespace _4RTools
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             // Application app = new Application();
             // app.IsMdiContainer = true;
-            var overlay = new OverlayForm();
-            overlay.Show();
             
             //Forms.ClientUpdaterForm app = new Forms.ClientUpdaterForm();
             //Forms.Container app = new Forms.Container();

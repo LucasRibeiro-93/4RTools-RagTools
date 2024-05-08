@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using _4RTools.Model;
+using _4RTools.Overlay;
 using _4RTools.Utils;
 
 namespace _4RTools.Forms
@@ -42,10 +43,11 @@ namespace _4RTools.Forms
             SetMacroSwitchWindow();
             SetAutoSwitchWindow();
 
+            SetOverlayWindow();
+            
             //TrackerSingleton.Instance().SendEvent("desktop_login", "page_view", "desktop_container_load");
         }
-
-
+        
         public void addform(TabPage tp, Form f)
         {
 
@@ -337,6 +339,11 @@ namespace _4RTools.Forms
 
         }
 
+        private void SetOverlayWindow()
+        {
+            var overlay = new OverlayForm(subject);
+            overlay.Show();
+        }
 
         #endregion
     }
