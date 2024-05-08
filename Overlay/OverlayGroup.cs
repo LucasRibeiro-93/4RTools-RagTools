@@ -10,7 +10,7 @@ namespace _4RTools.Overlay
 {
     public class OverlayGroup
     {
-        public Point Position = new Point(); //TODO: Encapsulate this
+        public Point Position = new Point();
 
         public int Size = 24;
         public int Spacing = 2;
@@ -26,6 +26,7 @@ namespace _4RTools.Overlay
 
         private OverlayCanvas _canvas;
         private Dictionary<uint, OverlayBuff> _trackedBuffs = new Dictionary<uint, OverlayBuff>();
+        private HashSet<uint> _activeBuffs = new HashSet<uint>();
 
         public OverlayGroup(OverlayCanvas canvas)
         {
@@ -34,33 +35,25 @@ namespace _4RTools.Overlay
 
         public void AddBuff(OverlayBuff buff)
         {
-            _trackedBuffs.Add((uint) buff.StatusIDs, buff); //TODO: Change buff.StatusIDs to uint
-        }
-
-        internal void Reset()
-        {
-            foreach (var buff in _trackedBuffs.Values)
-            {
-                buff.WasActiveLastDraw = buff.IsActive;
-                buff.IsActive = !buff.ShowActive;
-            }
+            _trackedBuffs.Add(buff.BuffID, buff);
         }
 
         internal void Update(Client roClient)
         {
+            _activeBuffs.Clear();
+            
             for (var i = 0; i < Constants.MAX_BUFF_LIST_INDEX_SIZE - 1; i++)
             {
                 var activeBuff = roClient.CurrentBuffStatusCode(i);
                 if (activeBuff == uint.MaxValue) continue; //Ignore invalid buffs
-                
-                if (_trackedBuffs.TryGetValue(activeBuff, out var trackedBuff))
-                {
-                    trackedBuff.IsActive = trackedBuff.ShowActive;
-                }
+
+                _activeBuffs.Add(activeBuff);
             }
 
             foreach (var buff in _trackedBuffs.Values)
             {
+                buff.Update(_activeBuffs);
+                
                 if (buff.IsActive != buff.WasActiveLastDraw)
                 {
                     IsDirty = true;

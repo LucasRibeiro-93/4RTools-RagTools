@@ -55,7 +55,6 @@ namespace _4RTools.Overlay
             IsDirty = false;
             foreach (var group in _groups)
             {
-                group.Reset();
                 group.Update(ROClient);
 
                 IsDirty |= group.IsDirty;
