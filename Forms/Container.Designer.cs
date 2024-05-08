@@ -39,8 +39,8 @@ namespace _4RTools.Forms
             this.atkDef = new System.Windows.Forms.TabPage();
             this.tabMacroSwitch = new System.Windows.Forms.TabPage();
             this.tabPageDebuffs = new System.Windows.Forms.TabPage();
-            this.tabPageProfiles = new System.Windows.Forms.TabPage();
             this.tabOverlayEditor = new System.Windows.Forms.TabPage();
+            this.tabPageProfiles = new System.Windows.Forms.TabPage();
             this.lblProcessName = new System.Windows.Forms.Label();
             this.processCB = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new System.Windows.Forms.Button();
@@ -78,8 +78,8 @@ namespace _4RTools.Forms
             atkDefMode.Controls.Add(this.atkDef);
             atkDefMode.Controls.Add(this.tabMacroSwitch);
             atkDefMode.Controls.Add(this.tabPageDebuffs);
-            atkDefMode.Controls.Add(this.tabPageProfiles);
             atkDefMode.Controls.Add(this.tabOverlayEditor);
+            atkDefMode.Controls.Add(this.tabPageProfiles);
             atkDefMode.Location = new System.Drawing.Point(15, 274);
             atkDefMode.Name = "atkDefMode";
             atkDefMode.SelectedIndex = 0;
@@ -156,16 +156,6 @@ namespace _4RTools.Forms
             this.tabPageDebuffs.Text = "Debuffs";
             this.tabPageDebuffs.UseVisualStyleBackColor = true;
             // 
-            // tabPageProfiles
-            // 
-            this.tabPageProfiles.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (43)))), ((int) (((byte) (45)))), ((int) (((byte) (49)))));
-            this.tabPageProfiles.Location = new System.Drawing.Point(4, 22);
-            this.tabPageProfiles.Name = "tabPageProfiles";
-            this.tabPageProfiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProfiles.Size = new System.Drawing.Size(629, 274);
-            this.tabPageProfiles.TabIndex = 9;
-            this.tabPageProfiles.Text = "Profiles";
-            // 
             // tabOverlayEditor
             // 
             this.tabOverlayEditor.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (43)))), ((int) (((byte) (45)))), ((int) (((byte) (49)))));
@@ -175,6 +165,16 @@ namespace _4RTools.Forms
             this.tabOverlayEditor.Size = new System.Drawing.Size(629, 274);
             this.tabOverlayEditor.TabIndex = 10;
             this.tabOverlayEditor.Text = "Overlay";
+            // 
+            // tabPageProfiles
+            // 
+            this.tabPageProfiles.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (43)))), ((int) (((byte) (45)))), ((int) (((byte) (49)))));
+            this.tabPageProfiles.Location = new System.Drawing.Point(4, 22);
+            this.tabPageProfiles.Name = "tabPageProfiles";
+            this.tabPageProfiles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageProfiles.Size = new System.Drawing.Size(629, 274);
+            this.tabPageProfiles.TabIndex = 9;
+            this.tabPageProfiles.Text = "Profiles";
             // 
             // lblProcessName
             // 

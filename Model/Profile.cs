@@ -14,7 +14,7 @@ namespace _4RTools.Model
 
         public static void Load(string profileName)
         {
-            //try
+            try
             {
                 string json = File.ReadAllText(AppConfig.ProfileFolder + profileName + ".json");
                 dynamic rawObject = JsonConvert.DeserializeObject(json);
@@ -38,9 +38,9 @@ namespace _4RTools.Model
                     profile.OverlayCanvas = JsonConvert.DeserializeObject<OverlayCanvas>(Profile.GetByAction(rawObject, profile.OverlayCanvas));
                 }
             }
-            //catch {
-                //throw new Exception("Houve um problema ao carregar o perfil. Delete a pasta Profiles e tente novamente.");   
-            //}
+            catch {
+                throw new Exception("Houve um problema ao carregar o perfil. Delete a pasta Profiles e tente novamente.");   
+            }
         }
 
         public static void Create(string profileName)

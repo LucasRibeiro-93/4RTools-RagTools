@@ -341,9 +341,6 @@ namespace _4RTools.Forms
 
         private void SetOverlayWindow()
         {
-            var overlay = new OverlayForm(subject);
-            overlay.Show();
-
             var overlayEditor = new OverlayEditorForm(subject);
             overlayEditor.FormBorderStyle = FormBorderStyle.None;
             overlayEditor.MdiParent = this;

@@ -10,7 +10,7 @@ using _4RTools.Utils;
 
 namespace _4RTools.Overlay
 {
-	public partial class OverlayForm : Form, IObserver
+	public partial class OverlayForm : Form
     {
         private const int WS_EX_LAYERED = 0x80000;
         private const int WS_EX_TRANSPARENT = 0x20;
@@ -19,11 +19,13 @@ namespace _4RTools.Overlay
         
         private Client _roClient;
 
-        private OverlayCanvas _canvas = new OverlayCanvas();
+        private OverlayCanvas _canvas;
 
-        public OverlayForm(Subject subject)
+        public OverlayForm(OverlayCanvas canvas)
         {
             InitializeComponent();
+
+            _canvas = canvas;
             
             // Set window styles for layered and transparent behavior
             FormBorderStyle = FormBorderStyle.None;
@@ -40,8 +42,6 @@ namespace _4RTools.Overlay
             timer.Interval = 100; // Adjust the interval as needed
             timer.Tick += TimerUpdate;
             timer.Start();
-            
-            subject.Attach(this);
         }
 
         private void TimerUpdate(object sender, EventArgs e)
@@ -74,24 +74,6 @@ namespace _4RTools.Overlay
 	        if (_canvas.IsDirty)
 	        {
 		        Invalidate();
-	        }
-        }
-        
-        public void Update(ISubject subject)
-        {
-	        switch ((subject as Subject).Message.code)
-	        {
-		        case MessageCode.TURN_ON:
-			        _canvas.IsEnabled = true;
-			        Invalidate();
-			        break;
-		        case MessageCode.TURN_OFF:
-			        _canvas.IsEnabled = false;
-			        Invalidate();
-			        break;
-		        case MessageCode.PROFILE_CHANGED:
-			        _canvas = ProfileSingleton.GetCurrent().OverlayCanvas;
-			        break;
 	        }
         }
         

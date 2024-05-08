@@ -18,8 +18,13 @@ namespace _4RTools.Overlay
         
         public List<OverlayGroup> _groups = new List<OverlayGroup>();
 
+        private OverlayForm _overlay;
+        
         public OverlayCanvas()
         {
+            _overlay = new OverlayForm(this);
+            _overlay.Show();
+            
             /*var buffsGroup = new OverlayGroup(this)
             {
                 Position = new Point(36, 0),
@@ -77,10 +82,14 @@ namespace _4RTools.Overlay
 
         public void Start()
         {
+            IsEnabled = true;
+            _overlay.Invalidate();
         }
 
         public void Stop()
         {
+            IsEnabled = false;
+            _overlay.Invalidate();
         }
 
         public string GetConfiguration()
