@@ -26,9 +26,9 @@ namespace _4RTools.Overlay
             };
 
             //buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.KAUPE, "kaupe.png", false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke.png", false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.OVERTHRUST, Icons.bs_overthrust, false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint.png", false));
+            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke", false));
+            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.OVERTHRUST, "bs_overthrust", false));
+            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint", false));
 	        
             _groups.Add(buffsGroup);
 
@@ -36,14 +36,14 @@ namespace _4RTools.Overlay
             {
                 Position = new Point(0, 36)
             };
-
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYGROUND, Icons.tk_mild_earth, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYFIRE, Icons.tk_mild_fire, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWATER, Icons.tk_mild_water, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWIND, Icons.tk_mild_wind, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYTELEKINESIS, Icons.tk_mild_ghost, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.ASPERSIO, Icons.tk_mild_holy, true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, Icons.tk_mild_shadow, true));
+            
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYGROUND, "tk_mild_earth", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYFIRE, "tk_mild_fire", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWATER, "tk_mild_water", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWIND, "tk_mild_wind", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYTELEKINESIS, "tk_mild_ghost", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.ASPERSIO, "tk_mild_holy", true));
+            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, "tk_mild_shadow", true));
 	        
             _groups.Add(elementGroup);
         }

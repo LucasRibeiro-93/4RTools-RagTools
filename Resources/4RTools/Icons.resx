@@ -721,4 +721,10 @@
 	<data name="onehand" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>..\..\assets\images\onehand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 	</data>
+	<data name="provoke" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\..\assets\images\provoke.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="sprint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\..\assets\images\sprint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
 </root>
