@@ -15,30 +15,11 @@ namespace _4RTools.Overlay
         private const int WS_EX_LAYERED = 0x80000;
         private const int WS_EX_TRANSPARENT = 0x20;
         
-        private Pen borderPen = new Pen(Color.Red, 2); // Define a red pen for drawing the border
+        private Pen _borderPen = new Pen(Color.Red, 2); // Define a red pen for drawing the border
         
         private Client _roClient;
-        private OverlayGroup _testGroup;
-        private bool isEnabled;
 
-        // Hardcoded bullshit
-        private void SetupDefaultBuffList()
-        {
-	        _testGroup = new OverlayGroup();
-	        _testGroup.Position = new Point(36, 0);
-	        
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.KAUPE, "kaupe.png", false));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke.png", false));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint.png", false));
-	        
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYGROUND, Icons.tk_mild_earth, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYFIRE, Icons.tk_mild_fire, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWATER, Icons.tk_mild_water, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWIND, Icons.tk_mild_wind, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYTELEKINESIS, Icons.tk_mild_ghost, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.ASPERSIO, Icons.tk_mild_holy, true));
-	        _testGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, Icons.tk_mild_shadow, true));
-        }
+        private OverlayCanvas _canvas = new OverlayCanvas();
 
         public OverlayForm(Subject subject)
         {
@@ -54,18 +35,16 @@ namespace _4RTools.Overlay
             // Set layered window attributes to make the window transparent and click-through
             SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) | WS_EX_LAYERED | WS_EX_TRANSPARENT);
             
-            SetupDefaultBuffList();
-            
             // Start a timer to continuously monitor the target window size and position
             var timer = new Timer();
             timer.Interval = 100; // Adjust the interval as needed
-            timer.Tick += Timer_Tick;
+            timer.Tick += TimerUpdate;
             timer.Start();
             
             subject.Attach(this);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void TimerUpdate(object sender, EventArgs e)
         {
 	        // Resize and reposition the overlay window based on the target window rectangle
 	        _roClient = ClientSingleton.GetClient();
@@ -89,10 +68,10 @@ namespace _4RTools.Overlay
 	        var windowRect = new RECT();
 	        GetWindowRect(targetWindowHandle, out windowRect);
 	        Bounds = new Rectangle(windowRect.Left, windowRect.Top, windowRect.Right - windowRect.Left, windowRect.Bottom - windowRect.Top);
+
+	        _canvas.Update(_roClient);
 	        
-	        _testGroup.Reset();
-	        _testGroup.Update(_roClient);
-	        if (_testGroup.IsDirty)
+	        if (_canvas.IsDirty)
 	        {
 		        Invalidate();
 	        }
@@ -103,11 +82,11 @@ namespace _4RTools.Overlay
 	        switch ((subject as Subject).Message.code)
 	        {
 		        case MessageCode.TURN_ON:
-			        isEnabled = true;
+			        _canvas.IsEnabled = true;
 			        Invalidate();
 			        break;
 		        case MessageCode.TURN_OFF:
-			        isEnabled = false;
+			        _canvas.IsEnabled = false;
 			        Invalidate();
 			        break;
 	        }
@@ -117,11 +96,8 @@ namespace _4RTools.Overlay
         protected override void OnPaint(PaintEventArgs e)
         {
 	        base.OnPaint(e);
-	        
-	        if(!isEnabled) return;
-	        if (_roClient == null) return; //Skip drawing if there is no client
 
-	        _testGroup.Draw(e, ClientRectangle);
+	        _canvas.Draw(e, ClientRectangle);
         }
 
         // P/Invoke declarations for Win32 functions
