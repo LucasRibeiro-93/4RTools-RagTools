@@ -13,13 +13,16 @@ namespace _4RTools.Overlay
 {
     public class OverlayCanvas : Action
     {
+        private static OverlayForm _overlay;
+        
         [NonSerialized]
         public bool IsEnabled;
         
         public List<OverlayGroup> Groups = new List<OverlayGroup>();
-
-        private static OverlayForm _overlay;
+        
         private bool _isDirty;
+
+        private ClientContext _clientContext = new ClientContext();
         
         public OverlayCanvas()
         {
@@ -38,10 +41,12 @@ namespace _4RTools.Overlay
 
         public void Update(Client ROClient)
         {
-            _isDirty = false;
+            _clientContext.ROClient = ROClient;
+            _clientContext.FetchAllClientData();
+            
             foreach (var group in Groups)
             {
-                group.Update(ROClient);
+                group.Update(_clientContext);
 
                 _isDirty |= group.IsDirty;
             }

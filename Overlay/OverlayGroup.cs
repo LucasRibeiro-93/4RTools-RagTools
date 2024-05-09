@@ -39,23 +39,13 @@ namespace _4RTools.Overlay
             TrackedBuffs.Add(buff);
         }
 
-        internal void Update(Client roClient)
+        internal void Update(ClientContext context)
         {
             if(!Enabled) return;
             
-            _activeBuffs.Clear();
-            
-            for (var i = 0; i < Constants.MAX_BUFF_LIST_INDEX_SIZE - 1; i++)
-            {
-                var activeBuff = roClient.CurrentBuffStatusCode(i);
-                if (activeBuff == uint.MaxValue) continue; //Ignore invalid buffs
-
-                _activeBuffs.Add(activeBuff);
-            }
-
             foreach (var buff in TrackedBuffs)
             {
-                buff.Update(_activeBuffs);
+                buff.Update(context);
                 
                 if (buff.IsActive != buff.WasActiveLastDraw)
                 {
@@ -83,18 +73,9 @@ namespace _4RTools.Overlay
                 var posX = GrowLeft ? -countX * padding : countX * padding;
                 var posY = GrowUp ? -countY * padding : countY * padding;
                 
-                var buffPosition = new Rectangle(startPosition.X + posX, startPosition.Y + posY, Size, Size);
+                var buffRect = new Rectangle(startPosition.X + posX, startPosition.Y + posY, Size, Size);
 
-                var icon = buff.Icon;
-                if (icon != null)
-                {
-                    e.Graphics.DrawImage(icon, buffPosition);
-                }
-
-                if (!buff.ShowActive)
-                {
-                    e.Graphics.DrawImage(Icons.prohibited, buffPosition);
-                }
+                buff.Draw(buffRect, e);
 
                 if (VerticalFirst)
                 {

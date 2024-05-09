@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 using _4RTools.Resources._4RTools;
 using _4RTools.Utils;
 
@@ -78,17 +79,31 @@ namespace _4RTools.Overlay
         {
         }
 
-        public void Update(HashSet<uint> activeBuffs)
+        public void Update(ClientContext context)
         {
             WasActiveLastDraw = IsActive;
             
-            if (activeBuffs.Contains(BuffID))
+            if (context.ActiveBuffs.Contains(BuffID))
             {
                 IsActive = ShowActive;
             }
             else
             {
                 IsActive = !ShowActive;
+            }
+        }
+
+        public void Draw(Rectangle position, PaintEventArgs e)
+        {
+            var icon = Icon;
+            if (icon != null)
+            {
+                e.Graphics.DrawImage(icon, position);
+            }
+
+            if (!ShowActive)
+            {
+                e.Graphics.DrawImage(Icons.prohibited, position);
             }
         }
 
