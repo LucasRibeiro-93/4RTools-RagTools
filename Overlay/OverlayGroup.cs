@@ -76,8 +76,13 @@ namespace _4RTools.Overlay
                 var posY = GrowUp ? -countY * padding : countY * padding;
                 
                 var buffPosition = new Rectangle(startPosition.X + posX, startPosition.Y + posY, Size, Size);
-                
-                e.Graphics.DrawImage(buff.Icon, buffPosition);
+
+                var icon = buff.Icon;
+                if (icon != null)
+                {
+                    e.Graphics.DrawImage(icon, buffPosition);
+                }
+
                 if (!buff.ShowActive)
                 {
                     e.Graphics.DrawImage(OverlayUtils.ProhibitedImage, buffPosition);
