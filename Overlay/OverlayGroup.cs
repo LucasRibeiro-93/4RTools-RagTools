@@ -10,6 +10,7 @@ namespace _4RTools.Overlay
 {
     public class OverlayGroup
     {
+        public string GroupName = "New Group";
         public Point Position = new Point();
 
         public int Size = 24;
@@ -27,6 +28,8 @@ namespace _4RTools.Overlay
         internal bool IsDirty;
         private HashSet<uint> _activeBuffs = new HashSet<uint>();
 
+        public string DisplayName => GroupName;
+        
         public void AddBuff(OverlayBuff buff)
         {
             _trackedBuffs.Add(buff);

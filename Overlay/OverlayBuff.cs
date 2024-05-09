@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using _4RTools.Resources._4RTools;
@@ -8,14 +9,29 @@ namespace _4RTools.Overlay
 {
     public class OverlayBuff
     {
-        public uint BuffID;
-        public bool ShowActive;
-        public string IconId;
+        public uint BuffID = 0;
+        public bool ShowActive = false;
+        public string IconId = "";
 
         internal bool IsActive;
         internal bool WasActiveLastDraw;
         
         private Image _icon;
+
+        public string DisplayName
+        {
+            get
+            {
+                if (Enum.IsDefined(typeof(EffectStatusIDs), BuffID))
+                {
+                    return Enum.GetName(typeof(EffectStatusIDs), BuffID);
+                }
+                else
+                {
+                    return BuffID.ToString();
+                }
+            }
+        }
 
         public Image Icon
         {
@@ -29,9 +45,16 @@ namespace _4RTools.Overlay
                     }
                     catch
                     {
-                        var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                        var imagePath = Path.Combine(path, "Assets", "Images", IconId);
-                        _icon = Image.FromFile(imagePath);
+                        try
+                        {
+                            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                            var imagePath = Path.Combine(path, "Assets", "Images", IconId);
+                            _icon = Image.FromFile(imagePath);
+                        }
+                        catch
+                        {
+                            _icon = Icons.LUX_AMINA;
+                        }
                     }
                 }
 
@@ -41,7 +64,7 @@ namespace _4RTools.Overlay
 
         public OverlayBuff()
         {
-            BuffID = uint.MaxValue;
+            BuffID = 0;
             ShowActive = true;
             IconId = "";
         }
@@ -51,8 +74,6 @@ namespace _4RTools.Overlay
             BuffID = buffId;
             ShowActive = showActive;
             IconId = iconName;
-
-
         }
         
         public OverlayBuff(EffectStatusIDs buffId, string iconName, bool showActive) : this((uint) buffId, iconName, showActive)
@@ -71,6 +92,11 @@ namespace _4RTools.Overlay
             {
                 IsActive = !ShowActive;
             }
+        }
+
+        public void InvalidateIcon()
+        {
+            _icon = null;
         }
     }
 }

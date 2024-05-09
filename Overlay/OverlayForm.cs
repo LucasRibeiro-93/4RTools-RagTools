@@ -68,7 +68,9 @@ namespace _4RTools.Overlay
 	        var windowRect = new RECT();
 	        GetWindowRect(targetWindowHandle, out windowRect);
 	        Bounds = new Rectangle(windowRect.Left, windowRect.Top, windowRect.Right - windowRect.Left, windowRect.Bottom - windowRect.Top);
-
+	        
+	        if(!_canvas.IsEnabled) return;
+	        
 	        _canvas.Update(_roClient);
 	        
 	        if (_canvas.IsDirty)

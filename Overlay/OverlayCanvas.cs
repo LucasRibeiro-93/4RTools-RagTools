@@ -16,7 +16,7 @@ namespace _4RTools.Overlay
         [NonSerialized]
         public bool IsEnabled;
         
-        public List<OverlayGroup> _groups = new List<OverlayGroup>();
+        public List<OverlayGroup> Groups = new List<OverlayGroup>();
 
         private OverlayForm _overlay;
         
@@ -60,7 +60,7 @@ namespace _4RTools.Overlay
         public void Update(Client ROClient)
         {
             IsDirty = false;
-            foreach (var group in _groups)
+            foreach (var group in Groups)
             {
                 group.Update(ROClient);
 
@@ -72,7 +72,7 @@ namespace _4RTools.Overlay
         {
             if(!IsEnabled) return;
             
-            foreach (var group in _groups)
+            foreach (var group in Groups)
             {
                 group.Draw(e, clientRect);
             }
