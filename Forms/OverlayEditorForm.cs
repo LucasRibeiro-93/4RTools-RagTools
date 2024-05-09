@@ -46,6 +46,7 @@ namespace _4RTools.Forms
             checkBoxGrowUp.Checked = SelectedGroup.GrowUp;
             textMaxElementsX.Text = SelectedGroup.MaxElementsX.ToString();
             textMaxElementsY.Text = SelectedGroup.MaxElementsY.ToString();
+            checkBoxGroupEnabled.Checked = SelectedGroup.Enabled;
 
             buffList.DisplayMember = "DisplayName";
             buffList.DataSource = _buffListBindingSource;
@@ -65,14 +66,20 @@ namespace _4RTools.Forms
 
         private void ApplyGroupListChanges()
         {
-            ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().OverlayCanvas);
+            var canvas = ProfileSingleton.GetCurrent().OverlayCanvas;
+            ProfileSingleton.SetConfiguration(canvas);
             _groupListBindingSource.ResetBindings(false);
+
+            canvas.MarkDirty();
         }
 
         private void ApplyBuffListChanges()
         {
-            ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().OverlayCanvas);
+            var canvas = ProfileSingleton.GetCurrent().OverlayCanvas;
+            ProfileSingleton.SetConfiguration(canvas);
             _buffListBindingSource.ResetBindings(false);
+            
+            canvas.MarkDirty();
         }
 
         public void Update(ISubject subject)
@@ -327,6 +334,12 @@ namespace _4RTools.Forms
                 (SelectedGroup.TrackedBuffs[selectedBuffIndex + 1], SelectedGroup.TrackedBuffs[selectedBuffIndex]) = (SelectedGroup.TrackedBuffs[selectedBuffIndex], SelectedGroup.TrackedBuffs[selectedBuffIndex + 1]);
                 ApplyBuffListChanges();
             }
+        }
+
+        private void checkBoxGroupEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectedGroup.Enabled = checkBoxGroupEnabled.Checked;
+            ApplyGroupListChanges();
         }
     }
 }

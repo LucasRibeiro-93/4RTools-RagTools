@@ -14,6 +14,7 @@ namespace _4RTools.Overlay
         public string GroupName = "New Group";
         public Point Position = new Point();
 
+        public bool Enabled = true;
         public int Size = 24;
         public int Spacing = 2;
         
@@ -40,6 +41,8 @@ namespace _4RTools.Overlay
 
         internal void Update(Client roClient)
         {
+            if(!Enabled) return;
+            
             _activeBuffs.Clear();
             
             for (var i = 0; i < Constants.MAX_BUFF_LIST_INDEX_SIZE - 1; i++)
@@ -63,6 +66,8 @@ namespace _4RTools.Overlay
 
         internal void Draw(PaintEventArgs e, Rectangle clientRect)
         {
+            if(!Enabled) return;
+            
             var middleX = clientRect.Left + (clientRect.Width / 2);
             var middleY = clientRect.Top + (clientRect.Height / 2);
             var startPosition = new Point(middleX + Position.X, middleY + Position.Y); //TODO: actual anchoring

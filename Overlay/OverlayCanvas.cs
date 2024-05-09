@@ -19,6 +19,7 @@ namespace _4RTools.Overlay
         public List<OverlayGroup> Groups = new List<OverlayGroup>();
 
         private static OverlayForm _overlay;
+        private bool _isDirty;
         
         public OverlayCanvas()
         {
@@ -33,16 +34,16 @@ namespace _4RTools.Overlay
             }
         }
 
-        public bool IsDirty { get; private set; }
+        public bool IsDirty => _isDirty;
 
         public void Update(Client ROClient)
         {
-            IsDirty = false;
+            _isDirty = false;
             foreach (var group in Groups)
             {
                 group.Update(ROClient);
 
-                IsDirty |= group.IsDirty;
+                _isDirty |= group.IsDirty;
             }
         }
 
@@ -55,7 +56,7 @@ namespace _4RTools.Overlay
                 group.Draw(e, clientRect);
             }
 
-            IsDirty = false;
+            _isDirty = false;
         }
 
         public void Start()
@@ -78,6 +79,11 @@ namespace _4RTools.Overlay
         public string GetActionName()
         {
             return "OverlayCanvas";
+        }
+
+        public void MarkDirty()
+        {
+            _isDirty = true;
         }
     }
 }

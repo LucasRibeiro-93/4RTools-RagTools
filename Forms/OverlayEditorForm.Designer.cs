@@ -45,6 +45,7 @@ namespace _4RTools.Forms
             this.btnGroupMoveDown = new System.Windows.Forms.Button();
             this.btnGroupMoveUp = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxGroupEnabled = new System.Windows.Forms.CheckBox();
             this.btnBuffMoveDown = new System.Windows.Forms.Button();
             this.btnBuffMoveUp = new System.Windows.Forms.Button();
             this.btnRemoveBuff = new System.Windows.Forms.Button();
@@ -204,6 +205,7 @@ namespace _4RTools.Forms
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.checkBoxGroupEnabled);
             this.panel1.Controls.Add(this.btnBuffMoveDown);
             this.panel1.Controls.Add(this.btnBuffMoveUp);
             this.panel1.Controls.Add(this.btnRemoveBuff);
@@ -226,13 +228,23 @@ namespace _4RTools.Forms
             this.panel1.Controls.Add(this.textGroupName);
             this.panel1.Location = new System.Drawing.Point(12, 136);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(518, 241);
+            this.panel1.Size = new System.Drawing.Size(518, 264);
             this.panel1.TabIndex = 4;
+            // 
+            // checkBoxGroupEnabled
+            // 
+            this.checkBoxGroupEnabled.Location = new System.Drawing.Point(4, 110);
+            this.checkBoxGroupEnabled.Name = "checkBoxGroupEnabled";
+            this.checkBoxGroupEnabled.Size = new System.Drawing.Size(104, 24);
+            this.checkBoxGroupEnabled.TabIndex = 23;
+            this.checkBoxGroupEnabled.Text = "Enabled";
+            this.checkBoxGroupEnabled.UseVisualStyleBackColor = true;
+            this.checkBoxGroupEnabled.CheckedChanged += new System.EventHandler(this.checkBoxGroupEnabled_CheckedChanged);
             // 
             // btnBuffMoveDown
             // 
             this.btnBuffMoveDown.ForeColor = System.Drawing.Color.Black;
-            this.btnBuffMoveDown.Location = new System.Drawing.Point(338, 184);
+            this.btnBuffMoveDown.Location = new System.Drawing.Point(338, 209);
             this.btnBuffMoveDown.Name = "btnBuffMoveDown";
             this.btnBuffMoveDown.Size = new System.Drawing.Size(97, 23);
             this.btnBuffMoveDown.TabIndex = 5;
@@ -243,7 +255,7 @@ namespace _4RTools.Forms
             // btnBuffMoveUp
             // 
             this.btnBuffMoveUp.ForeColor = System.Drawing.Color.Black;
-            this.btnBuffMoveUp.Location = new System.Drawing.Point(338, 155);
+            this.btnBuffMoveUp.Location = new System.Drawing.Point(338, 180);
             this.btnBuffMoveUp.Name = "btnBuffMoveUp";
             this.btnBuffMoveUp.Size = new System.Drawing.Size(97, 23);
             this.btnBuffMoveUp.TabIndex = 5;
@@ -254,7 +266,7 @@ namespace _4RTools.Forms
             // btnRemoveBuff
             // 
             this.btnRemoveBuff.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveBuff.Location = new System.Drawing.Point(338, 213);
+            this.btnRemoveBuff.Location = new System.Drawing.Point(338, 238);
             this.btnRemoveBuff.Name = "btnRemoveBuff";
             this.btnRemoveBuff.Size = new System.Drawing.Size(95, 23);
             this.btnRemoveBuff.TabIndex = 22;
@@ -265,7 +277,7 @@ namespace _4RTools.Forms
             // btnAddBuff
             // 
             this.btnAddBuff.ForeColor = System.Drawing.Color.Black;
-            this.btnAddBuff.Location = new System.Drawing.Point(338, 126);
+            this.btnAddBuff.Location = new System.Drawing.Point(338, 151);
             this.btnAddBuff.Name = "btnAddBuff";
             this.btnAddBuff.Size = new System.Drawing.Size(95, 23);
             this.btnAddBuff.TabIndex = 3;
@@ -276,7 +288,7 @@ namespace _4RTools.Forms
             // buffList
             // 
             this.buffList.FormattingEnabled = true;
-            this.buffList.Location = new System.Drawing.Point(3, 126);
+            this.buffList.Location = new System.Drawing.Point(3, 151);
             this.buffList.Name = "buffList";
             this.buffList.Size = new System.Drawing.Size(327, 108);
             this.buffList.TabIndex = 21;
@@ -378,7 +390,7 @@ namespace _4RTools.Forms
             this.panel2.Controls.Add(label6);
             this.panel2.Controls.Add(this.textBuffId);
             this.panel2.Controls.Add(label5);
-            this.panel2.Location = new System.Drawing.Point(12, 383);
+            this.panel2.Location = new System.Drawing.Point(12, 406);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(518, 85);
             this.panel2.TabIndex = 5;
@@ -432,7 +444,7 @@ namespace _4RTools.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (43)))), ((int) (((byte) (45)))), ((int) (((byte) (49)))));
-            this.ClientSize = new System.Drawing.Size(542, 477);
+            this.ClientSize = new System.Drawing.Size(542, 503);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlGroups);
@@ -448,6 +460,8 @@ namespace _4RTools.Forms
             ((System.ComponentModel.ISupportInitialize) (this.pictureBuffIcon)).EndInit();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.CheckBox checkBoxGroupEnabled;
 
         private System.Windows.Forms.Button btnGroupMoveUp;
         private System.Windows.Forms.Button btnGroupMoveDown;
