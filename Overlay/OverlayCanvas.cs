@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using _4RTools.Model;
-using _4RTools.Resources._4RTools;
-using _4RTools.Utils;
 using Newtonsoft.Json;
 using Action = _4RTools.Model.Action;
 
@@ -18,11 +15,9 @@ namespace _4RTools.Overlay
         [NonSerialized]
         public bool IsEnabled;
         
-        public List<OverlayGroup> Groups = new List<OverlayGroup>();
-        
-        private bool _isDirty;
+        public readonly List<OverlayGroup> Groups = new List<OverlayGroup>();
 
-        private ClientContext _clientContext = new ClientContext();
+        private readonly ClientContext _clientContext = new ClientContext();
         
         public OverlayCanvas()
         {
@@ -37,7 +32,8 @@ namespace _4RTools.Overlay
             }
         }
 
-        public bool IsDirty => _isDirty;
+        [JsonIgnore]
+        public bool IsDirty { get; private set; }
 
         public void Update(Client ROClient)
         {
@@ -48,7 +44,7 @@ namespace _4RTools.Overlay
             {
                 group.Update(_clientContext);
 
-                _isDirty |= group.IsDirty;
+                IsDirty |= group.IsDirty;
             }
         }
 
@@ -61,7 +57,7 @@ namespace _4RTools.Overlay
                 group.Draw(e, clientRect);
             }
 
-            _isDirty = false;
+            IsDirty = false;
         }
 
         public void Start()
@@ -88,7 +84,7 @@ namespace _4RTools.Overlay
 
         public void MarkDirty()
         {
-            _isDirty = true;
+            IsDirty = true;
         }
     }
 }

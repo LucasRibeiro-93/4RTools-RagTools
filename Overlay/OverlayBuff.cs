@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using _4RTools.Resources._4RTools;
 using _4RTools.Utils;
+using Newtonsoft.Json;
 
 namespace _4RTools.Overlay
 {
@@ -19,6 +20,7 @@ namespace _4RTools.Overlay
         
         private Image _icon;
 
+        [JsonIgnore]
         public string DisplayName
         {
             get
@@ -34,6 +36,7 @@ namespace _4RTools.Overlay
             }
         }
 
+        [JsonIgnore]
         public Image Icon
         {
             get

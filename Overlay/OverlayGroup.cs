@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using _4RTools.Model;
 using _4RTools.Resources._4RTools;
 using _4RTools.Utils;
+using Newtonsoft.Json;
 
 namespace _4RTools.Overlay
 {
@@ -26,12 +27,11 @@ namespace _4RTools.Overlay
         public int MaxElementsY = 5;
         
         public List<OverlayBuff> TrackedBuffs = new List<OverlayBuff>();
-
-        private bool _isDirty;
-        private HashSet<uint> _activeBuffs = new HashSet<uint>();
         
-        public bool IsDirty => _isDirty; 
+        [JsonIgnore]
+        public bool IsDirty { get; private set; }
 
+        [JsonIgnore]
         public string DisplayName => GroupName;
         
         public void AddBuff(OverlayBuff buff)
@@ -49,7 +49,7 @@ namespace _4RTools.Overlay
                 
                 if (buff.IsActive != buff.WasActiveLastDraw)
                 {
-                    _isDirty = true;
+                    IsDirty = true;
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace _4RTools.Overlay
                 }
             }
 
-            _isDirty = false;
+            IsDirty = false;
         }
     }
 }

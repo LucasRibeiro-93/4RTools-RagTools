@@ -14,8 +14,15 @@ namespace _4RTools.Forms
         private BindingSource _groupListBindingSource = new BindingSource();
         private BindingSource _buffListBindingSource = new BindingSource();
 
-        private OverlayGroup SelectedGroup => _overlayCanvas.Groups[groupList.SelectedIndex];
-        private OverlayBuff SelectedBuff => SelectedGroup.TrackedBuffs[buffList.SelectedIndex];
+        private OverlayGroup SelectedGroup =>
+            groupList.SelectedIndex >= 0 && groupList.SelectedIndex < _overlayCanvas.Groups.Count
+                ? _overlayCanvas.Groups[groupList.SelectedIndex]
+                : null;
+
+        private OverlayBuff SelectedBuff => 
+            SelectedGroup != null && buffList.SelectedIndex >= 0 && buffList.SelectedIndex < SelectedGroup.TrackedBuffs.Count 
+                ? SelectedGroup.TrackedBuffs[buffList.SelectedIndex] 
+                : null;
         
         public OverlayEditorForm(Subject subject)
         {
@@ -105,6 +112,7 @@ namespace _4RTools.Forms
             _overlayCanvas.Groups.Add(new OverlayGroup());
             ApplyGroupListChanges();
             groupList.SelectedIndex = _overlayCanvas.Groups.Count - 1;
+            groupList_SelectedIndexChanged(this, EventArgs.Empty);
         }
 
         private void btnRemoveGroup_Click(object sender, EventArgs e)
@@ -125,6 +133,12 @@ namespace _4RTools.Forms
             {
                 groups.RemoveAt(selectedIndex);
                 ApplyGroupListChanges();
+
+                if (selectedIndex == groupsCount)
+                {
+                    groupList.SelectedIndex--;
+                    groupList_SelectedIndexChanged(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -279,6 +293,7 @@ namespace _4RTools.Forms
             SelectedGroup.AddBuff(new OverlayBuff());
             ApplyBuffListChanges();
             buffList.SelectedIndex = SelectedGroup.TrackedBuffs.Count - 1;
+            buffList_SelectedIndexChanged(this, EventArgs.Empty);
         }
 
         private void btnRemoveBuff_Click(object sender, EventArgs e)
@@ -299,6 +314,12 @@ namespace _4RTools.Forms
             {
                 buffs.RemoveAt(selectedIndex);
                 ApplyBuffListChanges();
+                
+                if (selectedIndex == buffsCount)
+                {
+                    buffList.SelectedIndex--;
+                    buffList_SelectedIndexChanged(this, EventArgs.Empty);
+                }
             }
         }
 
