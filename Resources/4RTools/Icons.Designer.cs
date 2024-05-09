@@ -1532,6 +1532,16 @@ namespace _4RTools.Resources._4RTools {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap prohibited {
+            get {
+                object obj = ResourceManager.GetObject("prohibited", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap provoke {
             get {
                 object obj = ResourceManager.GetObject("provoke", resourceCulture);

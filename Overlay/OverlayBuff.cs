@@ -51,7 +51,7 @@ namespace _4RTools.Overlay
                         }
                         catch
                         {
-                            _icon = Icons.LUX_AMINA;
+                            _icon = Icons.prohibited;
                         }
                     }
                 }

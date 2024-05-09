@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using _4RTools.Model;
+using _4RTools.Resources._4RTools;
 using _4RTools.Utils;
 
 namespace _4RTools.Overlay
@@ -25,8 +26,10 @@ namespace _4RTools.Overlay
         
         public List<OverlayBuff> TrackedBuffs = new List<OverlayBuff>();
 
-        internal bool IsDirty;
+        private bool _isDirty;
         private HashSet<uint> _activeBuffs = new HashSet<uint>();
+        
+        public bool IsDirty => _isDirty; 
 
         public string DisplayName => GroupName;
         
@@ -53,7 +56,7 @@ namespace _4RTools.Overlay
                 
                 if (buff.IsActive != buff.WasActiveLastDraw)
                 {
-                    IsDirty = true;
+                    _isDirty = true;
                 }
             }
         }
@@ -85,7 +88,7 @@ namespace _4RTools.Overlay
 
                 if (!buff.ShowActive)
                 {
-                    e.Graphics.DrawImage(OverlayUtils.ProhibitedImage, buffPosition);
+                    e.Graphics.DrawImage(Icons.prohibited, buffPosition);
                 }
 
                 if (VerticalFirst)
@@ -112,7 +115,7 @@ namespace _4RTools.Overlay
                 }
             }
 
-            IsDirty = false;
+            _isDirty = false;
         }
     }
 }
