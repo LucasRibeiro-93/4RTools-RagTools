@@ -42,6 +42,8 @@ namespace _4RTools.Forms
             this.groupList = new System.Windows.Forms.ListBox();
             this.btnRemoveGroup = new System.Windows.Forms.Button();
             this.pnlGroups = new System.Windows.Forms.Panel();
+            this.btnGroupImport = new System.Windows.Forms.Button();
+            this.btnGroupExport = new System.Windows.Forms.Button();
             this.btnGroupMoveDown = new System.Windows.Forms.Button();
             this.btnGroupMoveUp = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -141,7 +143,7 @@ namespace _4RTools.Forms
             this.btnAddGroup.ForeColor = System.Drawing.Color.Black;
             this.btnAddGroup.Location = new System.Drawing.Point(338, 3);
             this.btnAddGroup.Name = "btnAddGroup";
-            this.btnAddGroup.Size = new System.Drawing.Size(97, 23);
+            this.btnAddGroup.Size = new System.Drawing.Size(84, 23);
             this.btnAddGroup.TabIndex = 1;
             this.btnAddGroup.Text = "Add Group";
             this.btnAddGroup.UseVisualStyleBackColor = true;
@@ -161,15 +163,17 @@ namespace _4RTools.Forms
             this.btnRemoveGroup.ForeColor = System.Drawing.Color.Black;
             this.btnRemoveGroup.Location = new System.Drawing.Point(338, 90);
             this.btnRemoveGroup.Name = "btnRemoveGroup";
-            this.btnRemoveGroup.Size = new System.Drawing.Size(97, 23);
+            this.btnRemoveGroup.Size = new System.Drawing.Size(84, 23);
             this.btnRemoveGroup.TabIndex = 2;
-            this.btnRemoveGroup.Text = "Remove Group";
+            this.btnRemoveGroup.Text = "Remove";
             this.btnRemoveGroup.UseVisualStyleBackColor = true;
             this.btnRemoveGroup.Click += new System.EventHandler(this.btnRemoveGroup_Click);
             // 
             // pnlGroups
             // 
             this.pnlGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlGroups.Controls.Add(this.btnGroupImport);
+            this.pnlGroups.Controls.Add(this.btnGroupExport);
             this.pnlGroups.Controls.Add(this.btnGroupMoveDown);
             this.pnlGroups.Controls.Add(this.btnGroupMoveUp);
             this.pnlGroups.Controls.Add(this.btnRemoveGroup);
@@ -180,12 +184,34 @@ namespace _4RTools.Forms
             this.pnlGroups.Size = new System.Drawing.Size(518, 118);
             this.pnlGroups.TabIndex = 3;
             // 
+            // btnGroupImport
+            // 
+            this.btnGroupImport.ForeColor = System.Drawing.Color.Black;
+            this.btnGroupImport.Location = new System.Drawing.Point(426, 32);
+            this.btnGroupImport.Name = "btnGroupImport";
+            this.btnGroupImport.Size = new System.Drawing.Size(84, 23);
+            this.btnGroupImport.TabIndex = 6;
+            this.btnGroupImport.Text = "Import";
+            this.btnGroupImport.UseVisualStyleBackColor = true;
+            this.btnGroupImport.Click += new System.EventHandler(this.btnGroupImport_Click);
+            // 
+            // btnGroupExport
+            // 
+            this.btnGroupExport.ForeColor = System.Drawing.Color.Black;
+            this.btnGroupExport.Location = new System.Drawing.Point(426, 3);
+            this.btnGroupExport.Name = "btnGroupExport";
+            this.btnGroupExport.Size = new System.Drawing.Size(84, 23);
+            this.btnGroupExport.TabIndex = 5;
+            this.btnGroupExport.Text = "Export";
+            this.btnGroupExport.UseVisualStyleBackColor = true;
+            this.btnGroupExport.Click += new System.EventHandler(this.btnGroupExport_Click);
+            // 
             // btnGroupMoveDown
             // 
             this.btnGroupMoveDown.ForeColor = System.Drawing.Color.Black;
             this.btnGroupMoveDown.Location = new System.Drawing.Point(338, 61);
             this.btnGroupMoveDown.Name = "btnGroupMoveDown";
-            this.btnGroupMoveDown.Size = new System.Drawing.Size(97, 23);
+            this.btnGroupMoveDown.Size = new System.Drawing.Size(84, 23);
             this.btnGroupMoveDown.TabIndex = 4;
             this.btnGroupMoveDown.Text = "Move Down";
             this.btnGroupMoveDown.UseVisualStyleBackColor = true;
@@ -196,7 +222,7 @@ namespace _4RTools.Forms
             this.btnGroupMoveUp.ForeColor = System.Drawing.Color.Black;
             this.btnGroupMoveUp.Location = new System.Drawing.Point(338, 32);
             this.btnGroupMoveUp.Name = "btnGroupMoveUp";
-            this.btnGroupMoveUp.Size = new System.Drawing.Size(97, 23);
+            this.btnGroupMoveUp.Size = new System.Drawing.Size(84, 23);
             this.btnGroupMoveUp.TabIndex = 3;
             this.btnGroupMoveUp.Text = "Move Up";
             this.btnGroupMoveUp.UseVisualStyleBackColor = true;
@@ -246,7 +272,7 @@ namespace _4RTools.Forms
             this.btnBuffMoveDown.ForeColor = System.Drawing.Color.Black;
             this.btnBuffMoveDown.Location = new System.Drawing.Point(338, 209);
             this.btnBuffMoveDown.Name = "btnBuffMoveDown";
-            this.btnBuffMoveDown.Size = new System.Drawing.Size(97, 23);
+            this.btnBuffMoveDown.Size = new System.Drawing.Size(84, 23);
             this.btnBuffMoveDown.TabIndex = 5;
             this.btnBuffMoveDown.Text = "Move Down";
             this.btnBuffMoveDown.UseVisualStyleBackColor = true;
@@ -257,7 +283,7 @@ namespace _4RTools.Forms
             this.btnBuffMoveUp.ForeColor = System.Drawing.Color.Black;
             this.btnBuffMoveUp.Location = new System.Drawing.Point(338, 180);
             this.btnBuffMoveUp.Name = "btnBuffMoveUp";
-            this.btnBuffMoveUp.Size = new System.Drawing.Size(97, 23);
+            this.btnBuffMoveUp.Size = new System.Drawing.Size(84, 23);
             this.btnBuffMoveUp.TabIndex = 5;
             this.btnBuffMoveUp.Text = "Move Up";
             this.btnBuffMoveUp.UseVisualStyleBackColor = true;
@@ -268,7 +294,7 @@ namespace _4RTools.Forms
             this.btnRemoveBuff.ForeColor = System.Drawing.Color.Black;
             this.btnRemoveBuff.Location = new System.Drawing.Point(338, 238);
             this.btnRemoveBuff.Name = "btnRemoveBuff";
-            this.btnRemoveBuff.Size = new System.Drawing.Size(95, 23);
+            this.btnRemoveBuff.Size = new System.Drawing.Size(84, 23);
             this.btnRemoveBuff.TabIndex = 22;
             this.btnRemoveBuff.Text = "Remove Buff";
             this.btnRemoveBuff.UseVisualStyleBackColor = true;
@@ -279,7 +305,7 @@ namespace _4RTools.Forms
             this.btnAddBuff.ForeColor = System.Drawing.Color.Black;
             this.btnAddBuff.Location = new System.Drawing.Point(338, 151);
             this.btnAddBuff.Name = "btnAddBuff";
-            this.btnAddBuff.Size = new System.Drawing.Size(95, 23);
+            this.btnAddBuff.Size = new System.Drawing.Size(84, 23);
             this.btnAddBuff.TabIndex = 3;
             this.btnAddBuff.Text = "Add Buff";
             this.btnAddBuff.UseVisualStyleBackColor = true;
@@ -460,6 +486,9 @@ namespace _4RTools.Forms
             ((System.ComponentModel.ISupportInitialize) (this.pictureBuffIcon)).EndInit();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button btnGroupExport;
+        private System.Windows.Forms.Button btnGroupImport;
 
         private System.Windows.Forms.CheckBox checkBoxGroupEnabled;
 

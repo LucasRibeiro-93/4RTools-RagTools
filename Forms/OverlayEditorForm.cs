@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using _4RTools.Model;
 using _4RTools.Overlay;
 using _4RTools.Utils;
+using Newtonsoft.Json;
 
 namespace _4RTools.Forms
 {
@@ -340,6 +341,33 @@ namespace _4RTools.Forms
         {
             SelectedGroup.Enabled = checkBoxGroupEnabled.Checked;
             ApplyGroupListChanges();
+        }
+
+        private void btnGroupExport_Click(object sender, EventArgs e)
+        {
+            var exportString = JsonConvert.SerializeObject(SelectedGroup);
+            Clipboard.SetText(exportString);
+        }
+
+        private void btnGroupImport_Click(object sender, EventArgs e)
+        {
+            var importedString = Clipboard.GetText();
+
+            if (string.IsNullOrEmpty(importedString))
+            {
+                MessageBox.Show("Please copy a group string to the clipboard!");
+            }
+
+            try
+            {
+                var importedGroup = JsonConvert.DeserializeObject<OverlayGroup>(importedString);
+                _overlayCanvas.Groups.Add(importedGroup);
+                ApplyGroupListChanges();
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong when importing the group.");
+            }
         }
     }
 }
