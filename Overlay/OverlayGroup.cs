@@ -23,7 +23,7 @@ namespace _4RTools.Overlay
         public int MaxElementsX = 3;
         public int MaxElementsY = 5;
         
-        public List<OverlayBuff> _trackedBuffs = new List<OverlayBuff>();
+        public List<OverlayBuff> TrackedBuffs = new List<OverlayBuff>();
 
         internal bool IsDirty;
         private HashSet<uint> _activeBuffs = new HashSet<uint>();
@@ -32,7 +32,7 @@ namespace _4RTools.Overlay
         
         public void AddBuff(OverlayBuff buff)
         {
-            _trackedBuffs.Add(buff);
+            TrackedBuffs.Add(buff);
         }
 
         internal void Update(Client roClient)
@@ -47,7 +47,7 @@ namespace _4RTools.Overlay
                 _activeBuffs.Add(activeBuff);
             }
 
-            foreach (var buff in _trackedBuffs)
+            foreach (var buff in TrackedBuffs)
             {
                 buff.Update(_activeBuffs);
                 
@@ -68,7 +68,7 @@ namespace _4RTools.Overlay
             var countX = 0;
             var countY = 0;
 
-            foreach (var buff in _trackedBuffs)
+            foreach (var buff in TrackedBuffs)
             {
                 if (!buff.IsActive) continue;
 

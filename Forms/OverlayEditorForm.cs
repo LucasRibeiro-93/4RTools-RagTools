@@ -14,7 +14,7 @@ namespace _4RTools.Forms
         private BindingSource _buffListBindingSource = new BindingSource();
 
         private OverlayGroup SelectedGroup => _overlayCanvas.Groups[groupList.SelectedIndex];
-        private OverlayBuff SelectedBuff => SelectedGroup._trackedBuffs[buffList.SelectedIndex];
+        private OverlayBuff SelectedBuff => SelectedGroup.TrackedBuffs[buffList.SelectedIndex];
         
         public OverlayEditorForm(Subject subject)
         {
@@ -50,7 +50,7 @@ namespace _4RTools.Forms
             buffList.DisplayMember = "DisplayName";
             buffList.DataSource = _buffListBindingSource;
             
-            _buffListBindingSource.DataSource = SelectedGroup._trackedBuffs;
+            _buffListBindingSource.DataSource = SelectedGroup.TrackedBuffs;
             _buffListBindingSource.ResetBindings(false);
         }
 
@@ -250,7 +250,7 @@ namespace _4RTools.Forms
 
         private void btnRemoveBuff_Click(object sender, EventArgs e)
         {
-            var buffs = SelectedGroup._trackedBuffs;
+            var buffs = SelectedGroup.TrackedBuffs;
             var selectedIndex = buffList.SelectedIndex;
             var buffsCount = buffs.Count;
             
