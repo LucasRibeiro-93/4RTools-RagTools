@@ -18,12 +18,19 @@ namespace _4RTools.Overlay
         
         public List<OverlayGroup> Groups = new List<OverlayGroup>();
 
-        private OverlayForm _overlay;
+        private static OverlayForm _overlay;
         
         public OverlayCanvas()
         {
-            _overlay = new OverlayForm(this);
-            _overlay.Show();
+            if (_overlay == null)
+            {
+                _overlay = new OverlayForm(this);
+                _overlay.Show();
+            }
+            else
+            {
+                _overlay.Canvas = this;
+            }
         }
 
         public bool IsDirty { get; private set; }
