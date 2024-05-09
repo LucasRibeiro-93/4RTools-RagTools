@@ -35,7 +35,7 @@ namespace _4RTools.Model
                     profile.Custom = JsonConvert.DeserializeObject<Custom>(Profile.GetByAction(rawObject, profile.Custom));
                     profile.DebuffsRecovery = JsonConvert.DeserializeObject<DebuffsRecovery>(Profile.GetByAction(rawObject, profile.DebuffsRecovery));
                     profile.AutoSwitch = JsonConvert.DeserializeObject<AutoSwitch>(Profile.GetByAction(rawObject, profile.AutoSwitch));
-                    profile.OverlayCanvas = JsonConvert.DeserializeObject<OverlayCanvas>(Profile.GetByAction(rawObject, profile.OverlayCanvas));
+                    profile.OverlayCanvas = JsonConvert.DeserializeObject<OverlayCanvas>(Profile.GetByAction(rawObject, new OverlayCanvas()));
                 }
             }
             catch {

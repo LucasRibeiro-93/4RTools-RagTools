@@ -19,13 +19,13 @@ namespace _4RTools.Overlay
         
         private Client _roClient;
 
-        private OverlayCanvas _canvas;
+        public OverlayCanvas Canvas;
 
         public OverlayForm(OverlayCanvas canvas)
         {
             InitializeComponent();
 
-            _canvas = canvas;
+            Canvas = canvas;
             
             // Set window styles for layered and transparent behavior
             FormBorderStyle = FormBorderStyle.None;
@@ -69,11 +69,11 @@ namespace _4RTools.Overlay
 	        GetWindowRect(targetWindowHandle, out windowRect);
 	        Bounds = new Rectangle(windowRect.Left, windowRect.Top, windowRect.Right - windowRect.Left, windowRect.Bottom - windowRect.Top);
 	        
-	        if(!_canvas.IsEnabled) return;
+	        if(!Canvas.IsEnabled) return;
 	        
-	        _canvas.Update(_roClient);
+	        Canvas.Update(_roClient);
 	        
-	        if (_canvas.IsDirty)
+	        if (Canvas.IsDirty)
 	        {
 		        Invalidate();
 	        }
@@ -84,7 +84,7 @@ namespace _4RTools.Overlay
         {
 	        base.OnPaint(e);
 
-	        _canvas.Draw(e, ClientRectangle);
+	        Canvas.Draw(e, ClientRectangle);
         }
 
         // P/Invoke declarations for Win32 functions
