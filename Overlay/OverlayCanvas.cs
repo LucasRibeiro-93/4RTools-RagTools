@@ -24,35 +24,6 @@ namespace _4RTools.Overlay
         {
             _overlay = new OverlayForm(this);
             _overlay.Show();
-            
-            /*var buffsGroup = new OverlayGroup(this)
-            {
-                Position = new Point(36, 0),
-                GrowUp = true,
-                VerticalFirst = true
-            };
-
-            //buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.KAUPE, "kaupe.png", false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROVOKE, "provoke", false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.OVERTHRUST, "bs_overthrust", false));
-            buffsGroup.AddBuff(new OverlayBuff(EffectStatusIDs.SPRINT, "sprint", false));
-	        
-            _groups.Add(buffsGroup);
-
-            var elementGroup = new OverlayGroup(this)
-            {
-                Position = new Point(0, 36)
-            };
-            
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYGROUND, "tk_mild_earth", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYFIRE, "tk_mild_fire", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWATER, "tk_mild_water", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYWIND, "tk_mild_wind", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYTELEKINESIS, "tk_mild_ghost", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.ASPERSIO, "tk_mild_holy", true));
-            elementGroup.AddBuff(new OverlayBuff(EffectStatusIDs.PROPERTYDARK, "tk_mild_shadow", true));
-	        
-            _groups.Add(elementGroup);*/
         }
 
         public bool IsDirty { get; private set; }
