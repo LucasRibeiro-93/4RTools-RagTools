@@ -109,6 +109,8 @@ namespace _4RTools.Forms
 
         private void btnRemoveGroup_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var groups = _overlayCanvas.Groups;
             var selectedIndex = groupList.SelectedIndex;
             var groupsCount = groups.Count;
@@ -133,12 +135,16 @@ namespace _4RTools.Forms
 
         private void textGroupName_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.GroupName = textGroupName.Text;
             ApplyGroupListChanges();
         }
 
         private void textGroupPosX_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var posX = SelectedGroup.Position.X;
             try
             {
@@ -154,6 +160,8 @@ namespace _4RTools.Forms
 
         private void textGroupPosY_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var posY = SelectedGroup.Position.Y;
             try
             {
@@ -169,6 +177,8 @@ namespace _4RTools.Forms
 
         private void textGroupSize_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var size = SelectedGroup.Size;
             try
             {
@@ -184,6 +194,8 @@ namespace _4RTools.Forms
 
         private void textGroupSpacing_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var spacing = SelectedGroup.Spacing;
             try
             {
@@ -199,24 +211,32 @@ namespace _4RTools.Forms
 
         private void checkBoxVertical_CheckedChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.VerticalFirst = checkBoxVertical.Checked;
             ApplyGroupListChanges();
         }
 
         private void checkBoxGrowLeft_CheckedChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.GrowLeft = checkBoxGrowLeft.Checked;
             ApplyGroupListChanges();
         }
 
         private void checkBoxGrowUp_CheckedChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.GrowUp = checkBoxGrowUp.Checked;
             ApplyGroupListChanges();
         }
 
         private void textMaxElementsX_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var maxElementsX = SelectedGroup.MaxElementsX;
             try
             {
@@ -232,6 +252,8 @@ namespace _4RTools.Forms
 
         private void textMaxElementsY_TextChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var maxElementsY = SelectedGroup.MaxElementsY;
             try
             {
@@ -252,12 +274,16 @@ namespace _4RTools.Forms
         
         private void btnAddBuff_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.AddBuff(new OverlayBuff());
             ApplyBuffListChanges();
         }
 
         private void btnRemoveBuff_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null || SelectedBuff == null) return;
+            
             var buffs = SelectedGroup.TrackedBuffs;
             var selectedIndex = buffList.SelectedIndex;
             var buffsCount = buffs.Count;
@@ -277,6 +303,8 @@ namespace _4RTools.Forms
 
         private void btnApplyBuffChanges_Click(object sender, EventArgs e)
         {
+            if(SelectedBuff == null) return;
+            
             if (Enum.TryParse(textBuffId.Text, out EffectStatusIDs enumId))
             {
                 SelectedBuff.BuffID = (uint) enumId;
@@ -299,6 +327,8 @@ namespace _4RTools.Forms
 
         private void btnGroupMoveUp_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var selectedGroupIndex = groupList.SelectedIndex;
             if (selectedGroupIndex > 0)
             {
@@ -309,6 +339,8 @@ namespace _4RTools.Forms
 
         private void btnGroupMoveDown_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var selectedGroupIndex = groupList.SelectedIndex;
             if (selectedGroupIndex < _overlayCanvas.Groups.Count - 1)
             {
@@ -319,6 +351,8 @@ namespace _4RTools.Forms
 
         private void btnBuffMoveUp_Click(object sender, EventArgs e)
         {
+            if(SelectedBuff == null) return;
+            
             var selectedBuffIndex = buffList.SelectedIndex;
             if (selectedBuffIndex > 0)
             {
@@ -329,6 +363,8 @@ namespace _4RTools.Forms
 
         private void btnBuffMoveDown_Click(object sender, EventArgs e)
         {
+            if(SelectedBuff == null) return;
+            
             var selectedBuffIndex = buffList.SelectedIndex;
             if (selectedBuffIndex < SelectedGroup.TrackedBuffs.Count - 1)
             {
@@ -339,14 +375,19 @@ namespace _4RTools.Forms
 
         private void checkBoxGroupEnabled_CheckedChanged(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             SelectedGroup.Enabled = checkBoxGroupEnabled.Checked;
             ApplyGroupListChanges();
         }
 
         private void btnGroupExport_Click(object sender, EventArgs e)
         {
+            if(SelectedGroup == null) return;
+            
             var exportString = JsonConvert.SerializeObject(SelectedGroup);
             Clipboard.SetText(exportString);
+            MessageBox.Show("Group copied to the clipboard!");
         }
 
         private void btnGroupImport_Click(object sender, EventArgs e)
@@ -361,6 +402,12 @@ namespace _4RTools.Forms
             try
             {
                 var importedGroup = JsonConvert.DeserializeObject<OverlayGroup>(importedString);
+                
+                var dialogResult = MessageBox.Show(
+                    $"Are you sure you want to import the group: \"{importedGroup.GroupName}\"?", "Import Group", MessageBoxButtons.YesNo);
+
+                if (dialogResult != DialogResult.Yes) return;
+                
                 _overlayCanvas.Groups.Add(importedGroup);
                 ApplyGroupListChanges();
             }
