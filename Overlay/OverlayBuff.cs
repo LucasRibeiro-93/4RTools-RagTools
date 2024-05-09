@@ -39,11 +39,9 @@ namespace _4RTools.Overlay
             {
                 if (_icon == null)
                 {
-                    try
-                    {
-                        _icon = (Image) Icons.ResourceManager.GetObject(IconId);
-                    }
-                    catch
+                    _icon = (Image) Icons.ResourceManager.GetObject(IconId);
+                    
+                    if(_icon == null)
                     {
                         try
                         {
