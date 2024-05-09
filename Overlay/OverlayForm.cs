@@ -15,11 +15,11 @@ namespace _4RTools.Overlay
         private const int WS_EX_LAYERED = 0x80000;
         private const int WS_EX_TRANSPARENT = 0x20;
         
-        private Pen _borderPen = new Pen(Color.Red, 2); // Define a red pen for drawing the border
-        
         private Client _roClient;
 
         private OverlayCanvas _canvas;
+
+        private bool _isConfigWindowFocused;
 
         public OverlayForm(OverlayCanvas canvas)
         {
@@ -50,29 +50,35 @@ namespace _4RTools.Overlay
 	        _roClient = ClientSingleton.GetClient();
 	        if (_roClient == null)
 	        {
-		        Bounds = new Rectangle(512, 512, 512, 512);
+		        Bounds = new Rectangle(0, 0, 0, 0);
 		        return;
 	        }
 
 	        // Get the handle of the foreground window
-	        IntPtr foregroundWindowHandle = GetForegroundWindow();
-
-	        // Check if the roClient window is unfocused
-	        if (foregroundWindowHandle != _roClient.process.MainWindowHandle)
+	        var foregroundWindowHandle = GetForegroundWindow();
+	        
+	        const int nChars = 256;
+	        var windowTitle = new string(' ', nChars);
+	        GetWindowText(foregroundWindowHandle, windowTitle, nChars);
+	        windowTitle = windowTitle.Trim();
+	        
+	        // Check if either the roClient window or the main window of the application is focused
+	        var isClientFocused = foregroundWindowHandle == _roClient.process.MainWindowHandle;
+	        _isConfigWindowFocused = windowTitle.Contains(AppConfig.Name + " - " + AppConfig.Version);
+	        
+	        if (!isClientFocused && !_isConfigWindowFocused)
 	        {
 		        Bounds = new Rectangle(0, 0, 0, 0); // Set rectangle size to 0 if unfocused
 		        return;
 	        }
-	        
-	        var targetWindowHandle = _roClient.process.MainWindowHandle;
-	        var windowRect = new RECT();
-	        GetWindowRect(targetWindowHandle, out windowRect);
+
+	        GetWindowRect(_roClient.process.MainWindowHandle, out var windowRect);
 	        Bounds = new Rectangle(windowRect.Left, windowRect.Top, windowRect.Right - windowRect.Left, windowRect.Bottom - windowRect.Top);
-	        
-	        if(!_canvas.IsEnabled) return;
-	        
+    
+	        if (!_canvas.IsEnabled) return;
+    
 	        _canvas.Update(_roClient);
-	        
+    
 	        if (_canvas.IsDirty)
 	        {
 		        Invalidate();
@@ -85,6 +91,12 @@ namespace _4RTools.Overlay
 	        base.OnPaint(e);
 
 	        _canvas.Draw(e, ClientRectangle);
+	        
+	        if (_isConfigWindowFocused)
+	        {
+		        // _canvas.DrawDebug(e, ClientRectangle)
+	        }
+	        
         }
 
         // P/Invoke declarations for Win32 functions
@@ -102,6 +114,9 @@ namespace _4RTools.Overlay
         
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
+        
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern int GetWindowText(IntPtr hWnd, string lpString, int nMaxCount);
         
         [StructLayout(LayoutKind.Sequential)]
         private struct RECT
