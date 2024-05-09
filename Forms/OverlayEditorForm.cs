@@ -278,6 +278,7 @@ namespace _4RTools.Forms
             
             SelectedGroup.AddBuff(new OverlayBuff());
             ApplyBuffListChanges();
+            buffList.SelectedIndex = SelectedGroup.TrackedBuffs.Count - 1;
         }
 
         private void btnRemoveBuff_Click(object sender, EventArgs e)
