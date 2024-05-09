@@ -45,8 +45,8 @@ namespace _4RTools.Overlay
                     {
                         try
                         {
-                            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                            var imagePath = Path.Combine(path, "Assets", "Images", IconId);
+                            var path = Directory.GetCurrentDirectory();
+                            var imagePath = Path.Combine(path, "CustomIcons", IconId);
                             _icon = Image.FromFile(imagePath);
                         }
                         catch
