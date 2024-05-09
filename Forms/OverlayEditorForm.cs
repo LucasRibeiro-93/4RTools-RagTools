@@ -288,5 +288,45 @@ namespace _4RTools.Forms
             
             ApplyBuffListChanges();
         }
+
+        private void btnGroupMoveUp_Click(object sender, EventArgs e)
+        {
+            var selectedGroupIndex = groupList.SelectedIndex;
+            if (selectedGroupIndex > 0)
+            {
+                (_overlayCanvas.Groups[selectedGroupIndex - 1], _overlayCanvas.Groups[selectedGroupIndex]) = (_overlayCanvas.Groups[selectedGroupIndex], _overlayCanvas.Groups[selectedGroupIndex - 1]);
+            }
+            ApplyGroupListChanges();
+        }
+
+        private void btnGroupMoveDown_Click(object sender, EventArgs e)
+        {
+            var selectedGroupIndex = groupList.SelectedIndex;
+            if (selectedGroupIndex < _overlayCanvas.Groups.Count - 1)
+            {
+                (_overlayCanvas.Groups[selectedGroupIndex + 1], _overlayCanvas.Groups[selectedGroupIndex]) = (_overlayCanvas.Groups[selectedGroupIndex], _overlayCanvas.Groups[selectedGroupIndex + 1]);
+            }
+            ApplyGroupListChanges();
+        }
+
+        private void btnBuffMoveUp_Click(object sender, EventArgs e)
+        {
+            var selectedBuffIndex = buffList.SelectedIndex;
+            if (selectedBuffIndex > 0)
+            {
+                (SelectedGroup.TrackedBuffs[selectedBuffIndex - 1], SelectedGroup.TrackedBuffs[selectedBuffIndex]) = (SelectedGroup.TrackedBuffs[selectedBuffIndex], SelectedGroup.TrackedBuffs[selectedBuffIndex - 1]);
+                ApplyBuffListChanges();
+            }
+        }
+
+        private void btnBuffMoveDown_Click(object sender, EventArgs e)
+        {
+            var selectedBuffIndex = buffList.SelectedIndex;
+            if (selectedBuffIndex < SelectedGroup.TrackedBuffs.Count - 1)
+            {
+                (SelectedGroup.TrackedBuffs[selectedBuffIndex + 1], SelectedGroup.TrackedBuffs[selectedBuffIndex]) = (SelectedGroup.TrackedBuffs[selectedBuffIndex], SelectedGroup.TrackedBuffs[selectedBuffIndex + 1]);
+                ApplyBuffListChanges();
+            }
+        }
     }
 }

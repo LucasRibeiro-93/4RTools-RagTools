@@ -42,7 +42,11 @@ namespace _4RTools.Forms
             this.groupList = new System.Windows.Forms.ListBox();
             this.btnRemoveGroup = new System.Windows.Forms.Button();
             this.pnlGroups = new System.Windows.Forms.Panel();
+            this.btnGroupMoveDown = new System.Windows.Forms.Button();
+            this.btnGroupMoveUp = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnBuffMoveDown = new System.Windows.Forms.Button();
+            this.btnBuffMoveUp = new System.Windows.Forms.Button();
             this.btnRemoveBuff = new System.Windows.Forms.Button();
             this.btnAddBuff = new System.Windows.Forms.Button();
             this.buffList = new System.Windows.Forms.ListBox();
@@ -154,7 +158,7 @@ namespace _4RTools.Forms
             // btnRemoveGroup
             // 
             this.btnRemoveGroup.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveGroup.Location = new System.Drawing.Point(338, 32);
+            this.btnRemoveGroup.Location = new System.Drawing.Point(338, 90);
             this.btnRemoveGroup.Name = "btnRemoveGroup";
             this.btnRemoveGroup.Size = new System.Drawing.Size(97, 23);
             this.btnRemoveGroup.TabIndex = 2;
@@ -165,6 +169,8 @@ namespace _4RTools.Forms
             // pnlGroups
             // 
             this.pnlGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlGroups.Controls.Add(this.btnGroupMoveDown);
+            this.pnlGroups.Controls.Add(this.btnGroupMoveUp);
             this.pnlGroups.Controls.Add(this.btnRemoveGroup);
             this.pnlGroups.Controls.Add(this.groupList);
             this.pnlGroups.Controls.Add(this.btnAddGroup);
@@ -173,9 +179,33 @@ namespace _4RTools.Forms
             this.pnlGroups.Size = new System.Drawing.Size(518, 118);
             this.pnlGroups.TabIndex = 3;
             // 
+            // btnGroupMoveDown
+            // 
+            this.btnGroupMoveDown.ForeColor = System.Drawing.Color.Black;
+            this.btnGroupMoveDown.Location = new System.Drawing.Point(338, 61);
+            this.btnGroupMoveDown.Name = "btnGroupMoveDown";
+            this.btnGroupMoveDown.Size = new System.Drawing.Size(97, 23);
+            this.btnGroupMoveDown.TabIndex = 4;
+            this.btnGroupMoveDown.Text = "Move Down";
+            this.btnGroupMoveDown.UseVisualStyleBackColor = true;
+            this.btnGroupMoveDown.Click += new System.EventHandler(this.btnGroupMoveDown_Click);
+            // 
+            // btnGroupMoveUp
+            // 
+            this.btnGroupMoveUp.ForeColor = System.Drawing.Color.Black;
+            this.btnGroupMoveUp.Location = new System.Drawing.Point(338, 32);
+            this.btnGroupMoveUp.Name = "btnGroupMoveUp";
+            this.btnGroupMoveUp.Size = new System.Drawing.Size(97, 23);
+            this.btnGroupMoveUp.TabIndex = 3;
+            this.btnGroupMoveUp.Text = "Move Up";
+            this.btnGroupMoveUp.UseVisualStyleBackColor = true;
+            this.btnGroupMoveUp.Click += new System.EventHandler(this.btnGroupMoveUp_Click);
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.btnBuffMoveDown);
+            this.panel1.Controls.Add(this.btnBuffMoveUp);
             this.panel1.Controls.Add(this.btnRemoveBuff);
             this.panel1.Controls.Add(this.btnAddBuff);
             this.panel1.Controls.Add(this.buffList);
@@ -199,10 +229,32 @@ namespace _4RTools.Forms
             this.panel1.Size = new System.Drawing.Size(518, 241);
             this.panel1.TabIndex = 4;
             // 
+            // btnBuffMoveDown
+            // 
+            this.btnBuffMoveDown.ForeColor = System.Drawing.Color.Black;
+            this.btnBuffMoveDown.Location = new System.Drawing.Point(338, 184);
+            this.btnBuffMoveDown.Name = "btnBuffMoveDown";
+            this.btnBuffMoveDown.Size = new System.Drawing.Size(97, 23);
+            this.btnBuffMoveDown.TabIndex = 5;
+            this.btnBuffMoveDown.Text = "Move Down";
+            this.btnBuffMoveDown.UseVisualStyleBackColor = true;
+            this.btnBuffMoveDown.Click += new System.EventHandler(this.btnBuffMoveDown_Click);
+            // 
+            // btnBuffMoveUp
+            // 
+            this.btnBuffMoveUp.ForeColor = System.Drawing.Color.Black;
+            this.btnBuffMoveUp.Location = new System.Drawing.Point(338, 155);
+            this.btnBuffMoveUp.Name = "btnBuffMoveUp";
+            this.btnBuffMoveUp.Size = new System.Drawing.Size(97, 23);
+            this.btnBuffMoveUp.TabIndex = 5;
+            this.btnBuffMoveUp.Text = "Move Up";
+            this.btnBuffMoveUp.UseVisualStyleBackColor = true;
+            this.btnBuffMoveUp.Click += new System.EventHandler(this.btnBuffMoveUp_Click);
+            // 
             // btnRemoveBuff
             // 
             this.btnRemoveBuff.ForeColor = System.Drawing.Color.Black;
-            this.btnRemoveBuff.Location = new System.Drawing.Point(338, 155);
+            this.btnRemoveBuff.Location = new System.Drawing.Point(338, 213);
             this.btnRemoveBuff.Name = "btnRemoveBuff";
             this.btnRemoveBuff.Size = new System.Drawing.Size(95, 23);
             this.btnRemoveBuff.TabIndex = 22;
@@ -396,6 +448,11 @@ namespace _4RTools.Forms
             ((System.ComponentModel.ISupportInitialize) (this.pictureBuffIcon)).EndInit();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button btnGroupMoveUp;
+        private System.Windows.Forms.Button btnGroupMoveDown;
+        private System.Windows.Forms.Button btnBuffMoveUp;
+        private System.Windows.Forms.Button btnBuffMoveDown;
 
         private System.Windows.Forms.PictureBox pictureBuffIcon;
 
