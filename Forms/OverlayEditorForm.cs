@@ -281,6 +281,7 @@ namespace _4RTools.Forms
             textBuffId.Text = SelectedBuff.BuffID.ToString();
             
             SelectedBuff.IconId = textBuffIcon.Text;
+            SelectedBuff.InvalidateIcon();
             pictureBuffIcon.Image = SelectedBuff.Icon;
             
             SelectedBuff.ShowActive = checkBoxBuffShowActive.Checked;
