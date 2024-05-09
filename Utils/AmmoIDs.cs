@@ -10,7 +10,7 @@ namespace _4RTools.Utils
 			var client = ClientSingleton.GetClient();
 			if (client == null) return -1;
 
-			return client.currentHPBaseAddress - 18144;
+			return client.currentHPBaseAddress - 4096 * 4 + 440 * 4;
 		}
 	}
 	
