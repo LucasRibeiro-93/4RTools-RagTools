@@ -328,5 +328,111 @@ namespace _4RTools.Forms
                 ApplyBuffListChanges();
             }
         }
+
+        private uint[] _memDump = new uint[1024];
+        private void button1_Click(object sender, EventArgs e)
+        {
+	        var client = ClientSingleton.GetClient();
+	        var address = client.currentHPBaseAddress - 4096 * 4 + 440 * 4;
+	        //Console.WriteLine($"{Enum.GetName(typeof(AmmoIDs), ammoID)} id: {ammoID} is equipped");
+
+	        var start = address - 256;
+	        for (int i = 0; i < _memDump.Length; i++)
+	        {
+		        var curAddress = start + i * 4;
+		        var curMem = client.ReadMemory(curAddress);
+
+		        if (curAddress == address)
+		        {
+			        Console.WriteLine($"{curMem} at address: AMMO ADDRESS");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15249388)
+		        {
+			        Console.WriteLine($"{curMem} at address: ARMOR!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15248964)
+		        {
+			        Console.WriteLine($"{curMem} at address: GARMENT!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15248716)
+		        {
+			        Console.WriteLine($"{curMem} at address: RIGHT HAND!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15248740)
+		        {
+			        Console.WriteLine($"{curMem} at address: IS THIS LEFT???");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15249188)
+		        {
+			        Console.WriteLine($"{curMem} at address: RIGHT ACCESSORY!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15250060)
+		        {
+			        Console.WriteLine($"{curMem} at address: LEFT ACCESSORY!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15249612)
+		        {
+			        Console.WriteLine($"{curMem} at address: SHIELD!!");
+			        continue;
+		        }
+		        
+		        if (curAddress == 15250284)
+		        {
+			        Console.WriteLine($"{curMem} at address: HELM!!");
+			        continue;
+		        }
+		        
+		        Console.WriteLine($"{curMem} at address: {curAddress}");
+		        
+		        continue;
+		        
+		        if (i == address) Console.WriteLine("inventory ID equipped ammo address at " + address);
+		        if (i == client.currentHPBaseAddress) Console.WriteLine("HP base address at " + client.currentHPBaseAddress);
+		        
+		        //if (curMem == 4294967295) continue;
+		        //if (curMem == 0) continue;
+
+		        //if (curMem == 1750) Console.WriteLine($"found arrow at {i}");
+		        if (curMem == 1751) Console.WriteLine($"6 :found silver arrow at {i}");
+		        if (curMem == 1752) Console.WriteLine($"1 :found fire arrow at {i}");
+		        if (curMem == 1756) Console.WriteLine($"2 :found stone arrow at {i}");
+		        if (curMem == 1753) Console.WriteLine($"3 :found steel arrow at {i}");
+		        if (curMem == 1755) Console.WriteLine($"4 :found wind arrow at {i}");
+		        if (curMem == 1765) Console.WriteLine($"5 :found oridecon arrow at {i}");
+		        //if (curMem == 1767) Console.WriteLine($"found shadow arrow at {i}");
+		        if (curMem == 1763) Console.WriteLine($"0 :found poison arrow at {i}");
+		        //if (curMem == 1764) Console.WriteLine($"found sharp arrow at {i}");
+		        //if (curMem == 1761) Console.WriteLine($"found cursed arrow at {i}");
+		        if (curMem == 1769) Console.WriteLine($"7 :found mute arrow at {i}");
+	        }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+	        Console.WriteLine("Comparing Memory");
+	        var client = ClientSingleton.GetClient();
+	        for (int i = 0; i < _memDump.Length; i++)
+	        {
+		        var curBuff = client.CurrentBuffStatusCode(i);
+		        if (curBuff != _memDump[i])
+		        {
+			        //Console.WriteLine($"{curBuff.ToString()} is now {_memDump[i].ToString()} at address {i}");
+		        }
+	        }
+        }
     }
 }

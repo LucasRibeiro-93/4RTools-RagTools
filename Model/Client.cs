@@ -145,7 +145,7 @@ namespace _4RTools.Model
             }
         }
 
-        private string ReadMemoryAsString(int address)
+        public string ReadMemoryAsString(int address)
         {
             byte[] bytes = PMR.ReadProcessMemory((IntPtr)address, 40u, out _num);
             List<byte> buffer = new List<byte>(); //Need a list with dynamic size 
@@ -160,7 +160,7 @@ namespace _4RTools.Model
 
         }
 
-        private uint ReadMemory(int address)
+        public uint ReadMemory(int address)
         {
             return BitConverter.ToUInt32(PMR.ReadProcessMemory((IntPtr)address, 4u, out _num), 0);
         }
