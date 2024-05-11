@@ -414,6 +414,7 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Compile>
     <Compile Include="Overlay\ClientContext.cs" />
+    <Compile Include="Overlay\EquipmentUtils.cs" />
     <Compile Include="Overlay\OverlayBuff.cs" />
     <Compile Include="Overlay\OverlayCanvas.cs" />
     <Compile Include="Overlay\OverlayForm.cs">

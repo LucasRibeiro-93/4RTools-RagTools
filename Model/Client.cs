@@ -160,7 +160,7 @@ namespace _4RTools.Model
 
         }
 
-        private uint ReadMemory(int address)
+        public uint ReadMemory(int address)
         {
             return BitConverter.ToUInt32(PMR.ReadProcessMemory((IntPtr)address, 4u, out _num), 0);
         }
