@@ -119,7 +119,7 @@ namespace _4RTools.Overlay
 	        e.Graphics.DrawString($"ARMOR {armor}", font, brush, x, y);
 	        y += 16;
 	        
-	        var garment = _roClient.ReadMemory(15248964);
+	        var garment = _roClient.ReadMemory(15248940/*15248964*/);
 	        e.Graphics.DrawString($"GARMENT {garment}", font, brush, x, y);
 	        y += 16;
 	        
@@ -131,7 +131,7 @@ namespace _4RTools.Overlay
 	        e.Graphics.DrawString($"LEFT HAND {shield}", font, brush, x, y);
 	        y += 16;
 	        
-	        var rightAcc = _roClient.ReadMemory(15249188);
+	        var rightAcc = _roClient.ReadMemory(15249164/*15249188*/);
 	        e.Graphics.DrawString($"RIGHT ACCESSORY {rightAcc}", font, brush, x, y);
 	        y += 16;
 	        
