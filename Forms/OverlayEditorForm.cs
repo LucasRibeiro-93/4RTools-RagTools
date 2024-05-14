@@ -438,5 +438,39 @@ namespace _4RTools.Forms
                 MessageBox.Show("Something went wrong when importing the group.");
             }
         }
+
+        private int _start = 0;
+        private int _size = 1024;
+
+        private void SetStart_TextChanged(object sender, EventArgs e)
+        {
+	        if (int.TryParse(SetStart.Text, out var startValue))
+	        {
+		        _start = startValue;
+	        }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+	        if (int.TryParse(SetEnd.Text, out var size))
+	        {
+		        _size = size;
+	        }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+	        Console.WriteLine($"Dumping from {_start}, To {_start + _size}");
+
+	        var client = ClientSingleton.GetClient();
+	        if (client == null) return;
+
+	        for (var i = 0; i < _size; i++)
+	        {
+		        var curAddress = _start + i * 4;
+		        var curValue = client.ReadMemory(curAddress);
+		        Console.WriteLine($"{curValue} at address {curAddress}");
+	        }
+        }
     }
 }
