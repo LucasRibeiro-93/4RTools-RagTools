@@ -121,8 +121,8 @@ namespace _4RTools.Overlay
 	        if (_roClient ==  null) return;
 	        // Calculate position for drawing text
 	        var x = 10; // x-coordinate
-	        var y = 10; // y-coordinate
-	        var backgroundRect = new Rectangle(x, y, 128, 256);
+	        var y = 600; // y-coordinate
+	        var backgroundRect = new Rectangle(x, y, 16, _addresses.Length * 16);
 	        using (SolidBrush semiTransparentBlackBrush = new SolidBrush(Color.FromArgb(128, Color.Black)))
 	        {
 		        e.Graphics.FillRectangle(semiTransparentBlackBrush, backgroundRect);
