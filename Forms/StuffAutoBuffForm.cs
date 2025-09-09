@@ -21,7 +21,7 @@ namespace _4RTools.Forms
             stuffContainers.Add(new BuffContainer(this.ScrollBuffsGP, Buff.GetScrollBuffs()));
             stuffContainers.Add(new BuffContainer(this.EtcGP, Buff.GetETCBuffs()));
 
-            new BuffRenderer(stuffContainers, toolTip1).doRender();
+            new BuffRenderer(stuffContainers, toolTip1, ProfileSingleton.GetCurrent().AutobuffStuff.actionName, subject).doRender();
 
             subject.Attach(this);
         }
@@ -31,15 +31,34 @@ namespace _4RTools.Forms
             switch ((subject as Subject).Message.code)
             {
                 case MessageCode.PROFILE_CHANGED:
-                    BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().Autobuff.buffMapping), this);
+                    BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().AutobuffStuff.buffMapping), this);
+                    this.numericDelay.Value = ProfileSingleton.GetCurrent().AutobuffStuff.delay;
                     break;
                 case MessageCode.TURN_OFF:
-                    ProfileSingleton.GetCurrent().Autobuff.Stop();
+                    ProfileSingleton.GetCurrent().AutobuffStuff.Stop();
                     break;
                 case MessageCode.TURN_ON:
-                    ProfileSingleton.GetCurrent().Autobuff.Start();
+                    ProfileSingleton.GetCurrent().AutobuffStuff.Start();
                     break;
             }
+        }
+
+        private void btnResetAutobuff_Click(object sender, EventArgs e)
+        {
+            ProfileSingleton.GetCurrent().AutobuffStuff.ClearKeyMapping();
+            ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().AutobuffStuff);
+            BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().AutobuffStuff.buffMapping), this);
+            this.numericDelay.Value = 100;
+        }
+
+        private void numericDelay_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ProfileSingleton.GetCurrent().AutobuffStuff.delay = Convert.ToInt16(this.numericDelay.Value);
+                ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().AutobuffStuff);
+            }
+            catch { }
         }
     }
 }

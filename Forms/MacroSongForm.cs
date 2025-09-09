@@ -53,7 +53,7 @@ namespace _4RTools.Forms
 
                 //Update Dagger Value
                 Control[] cDagger = p.Controls.Find("inDaggerMacro" + chainConfig.id, true);
-                if (c.Length > 0)
+                if (cDagger.Length > 0)
                 {
                     TextBox textBox = (TextBox)cDagger[0];
                     textBox.Text = chainConfig.daggerKey.ToString();
@@ -61,7 +61,7 @@ namespace _4RTools.Forms
 
                 //Update Instrument Value
                 Control[] cInstrument = p.Controls.Find("inInstrumentMacro" + chainConfig.id, true);
-                if (c.Length > 0)
+                if (cInstrument.Length > 0)
                 {
                     TextBox textBox = (TextBox)cInstrument[0];
                     textBox.Text = chainConfig.instrumentKey.ToString();
@@ -193,6 +193,12 @@ namespace _4RTools.Forms
                     {
                         Button resetButton = (Button)c;
                         resetButton.Click += new EventHandler(this.onReset);
+                    }
+
+                    if (c is NumericUpDown)
+                    {
+                        NumericUpDown numericUpDown = (NumericUpDown)c;
+                        numericUpDown.ValueChanged += new EventHandler(this.onDelayChange);
                     }
                 }
             } catch { }

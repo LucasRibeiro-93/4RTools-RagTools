@@ -37,7 +37,7 @@ namespace _4RTools.Forms
         private void InitializeApplicationForm()
         {
             RemoveHandlers();
-            FormUtils.ResetForm(this);
+            FormUtils.ResetCheckboxForm(this);
             SetLegendDefaultValues();
             this.ahk = ProfileSingleton.GetCurrent().AHK;
             InitializeCheckAsThreeState();
@@ -60,12 +60,22 @@ namespace _4RTools.Forms
         private void onCheckChange(object sender, EventArgs e)
         {
             CheckBox checkbox = (CheckBox)sender;
-
-            Key key = (Key)new KeyConverter().ConvertFromString(checkbox.Text);
             bool haveMouseClick = checkbox.CheckState == CheckState.Checked ? true : false;
 
             if (checkbox.CheckState == CheckState.Checked || checkbox.CheckState == CheckState.Indeterminate)
+            {
+                Key key;
+                if (checkbox.Tag != null)
+                {
+                    key = (Key)new KeyConverter().ConvertFromString(checkbox.Tag.ToString());
+                }
+                else
+                {
+                    key = (Key)new KeyConverter().ConvertFromString(checkbox.Text);
+                }
+
                 this.ahk.AddAHKEntry(checkbox.Name, new KeyConfig(key, haveMouseClick));
+            }
             else
                 this.ahk.RemoveAHKEntry(checkbox.Name);
 
@@ -101,6 +111,7 @@ namespace _4RTools.Forms
                     CheckBox check = (CheckBox)c;
                     check.CheckStateChanged -= onCheckChange;
                 }
+            this.chkNoShift.CheckedChanged -= new System.EventHandler(this.chkNoShift_CheckedChanged);
         }
 
 
@@ -118,6 +129,7 @@ namespace _4RTools.Forms
                     if (check.Enabled)
                         check.CheckStateChanged += onCheckChange;
                 }
+            this.chkNoShift.CheckedChanged += new System.EventHandler(this.chkNoShift_CheckedChanged);
         }
 
         private void SetLegendDefaultValues()

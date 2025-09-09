@@ -7,7 +7,7 @@
     <ProjectGuid>{A7D78B00-6CE1-4B4D-90A3-1D2E93C7F68A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>_4RTools</RootNamespace>
-    <AssemblyName>4RTools</AssemblyName>
+    <AssemblyName>TalesTools</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -52,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo-4rtools.ico</ApplicationIcon>
+    <ApplicationIcon>TalesIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -230,10 +230,17 @@
     </Compile>
     <EmbeddedResource Include="Forms\ATKDEFForm.resx">
       <DependentUpon>ATKDEFForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Forms\AutoPatcher.Designer.cs">
       <DependentUpon>AutoPatcher.cs</DependentUpon>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </Compile>
+    <Compile Include="Forms\AutoSwitchHealForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AutoSwitchHealForm.Designer.cs">
+      <DependentUpon>AutoSwitchHealForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ClientUpdaterForm.cs">
       <SubType>Form</SubType>
@@ -262,6 +269,9 @@
     <Compile Include="Forms\MacroSongForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Forms\AutoSwitchHealForm.resx">
+      <DependentUpon>AutoSwitchHealForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ClientUpdaterForm.resx">
       <DependentUpon>ClientUpdaterForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -287,6 +297,13 @@
       <DependentUpon>MacroSwitchForm.cs</DependentUpon>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Compile>
+    <Compile Include="Forms\ConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigForm.Designer.cs">
+      <DependentUpon>ConfigForm.cs</DependentUpon>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </Compile>
     <Compile Include="Forms\OverlayEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +315,10 @@
     </Compile>
     <EmbeddedResource Include="Forms\MacroSwitchForm.resx">
       <DependentUpon>MacroSwitchForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigForm.resx">
+      <DependentUpon>ConfigForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OverlayEditorForm.resx">
@@ -325,6 +346,7 @@
     </Compile>
     <EmbeddedResource Include="Forms\SkillAutoBuffForm.resx">
       <DependentUpon>SkillAutoBuffForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Forms\SkillTimerForm.Designer.cs">
       <DependentUpon>SkillTimerForm.cs</DependentUpon>
@@ -353,6 +375,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomButtonForm.resx">
       <DependentUpon>CustomButtonForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Forms\StuffAutoBuffForm.Designer.cs">
       <DependentUpon>StuffAutoBuffForm.cs</DependentUpon>
@@ -381,6 +404,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StuffAutoBuffForm.resx">
       <DependentUpon>StuffAutoBuffForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Forms\ToggleApplicationStateForm.Designer.cs">
       <DependentUpon>ToggleApplicationStateForm.cs</DependentUpon>
@@ -388,12 +412,15 @@
     </Compile>
     <Compile Include="Model\AHK.cs" />
     <Compile Include="Model\ATKDEFMode.cs" />
+    <Compile Include="Model\AutobuffSkill.cs" />
     <Compile Include="Model\AutoSwitch.cs" />
     <Compile Include="Model\Autopot.cs" />
-    <Compile Include="Model\Autobuff.cs" />
+    <Compile Include="Model\AutobuffStuff.cs" />
     <Compile Include="Model\AutoRefreshSpammer.cs" />
+    <Compile Include="Model\AutoSwitchHeal.cs" />
     <Compile Include="Model\Buff.cs" />
     <Compile Include="Model\BuffContainer.cs" />
+    <Compile Include="Model\AutoSwitchRenderer.cs" />
     <Compile Include="Model\DebuffRenderer.cs" />
     <Compile Include="Model\BuffRenderer.cs" />
     <Compile Include="Model\Custom.cs" />
@@ -486,6 +513,24 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\TalesIcon_off.png" />
+    <None Include="Resources\TalesIcon_on.png" />
+    <None Include="Resources\TalesIcon_off.ico" />
+    <None Include="Resources\TalesIcon_on.ico" />
+    <None Include="assets\images\run.png" />
+    <None Include="assets\images\chase_walk.png" />
+    <None Include="assets\images\clementia.png" />
+    <None Include="assets\images\canto_candidus.png" />
+    <None Include="assets\images\fighting_spirit.png" />
+    <None Include="assets\images\providence.png" />
+    <None Include="assets\images\ring_nibelungen.png" />
+    <None Include="assets\images\hp_conversion.png" />
+    <None Include="assets\images\drumbattlefield.png" />
+    <None Include="assets\images\renovatio.png" />
+    <None Include="assets\images\stasis.png" />
+    <None Include="assets\images\magical_bullet.png" />
+    <None Include="assets\images\giant_growth.png" />
+    <Content Include="TalesIcon.ico" />
     <None Include="assets\images\abrasive.gif" />
     <None Include="assets\images\ac_concentration.gif" />
     <None Include="assets\images\agi_3rd_food.png" />
@@ -540,7 +585,6 @@
     <None Include="assets\images\lk_aurablade.gif" />
     <None Include="assets\images\lk_berserk.gif" />
     <None Include="assets\images\lk_concentration.gif" />
-    <None Include="assets\images\logo-4rtools-small-2.png" />
     <None Include="assets\images\luk_3rd_food.png" />
     <None Include="assets\images\luk_food.gif" />
     <None Include="assets\images\lutie_pancake.gif" />
@@ -585,13 +629,10 @@
     <None Include="assets\images\wz_sightblaster.gif" />
     <None Include="assets\etc\arrowdown.png" />
     <None Include="assets\etc\arrowup.png" />
-    <None Include="assets\etc\logo_4rtools_off.ico" />
-    <None Include="assets\etc\logo_4rtools_on.ico" />
     <None Include="assets\etc\Speech_Off.wav" />
     <None Include="assets\etc\Speech_On.wav" />
     <None Include="assets\etc\supported_servers.txt" />
     <None Include="assets\etc\Yggdrasil.bmp" />
-    <None Include="assets\images\logo-4rtools-small.png" />
     <None Include="assets\images\tk_earth.jpg" />
     <None Include="assets\images\tk_mild_earth.jpg" />
     <None Include="assets\images\tk_mild_fire.jpg" />
@@ -657,15 +698,37 @@
     <None Include="assets\etc\Healing_Off.mp3" />
     <None Include="assets\etc\Healing_Off.wav" />
     <None Include="assets\etc\Healing_On.wav" />
+    <None Include="assets\images\accuracy_Scroll.png" />
+    <None Include="assets\etc\arrowright.png" />
+    <None Include="assets\etc\remove.png" />
     <Content Include="assets\images\ads_placeholder_clean.jpg" />
+    <None Include="assets\images\burning.png" />
+    <None Include="assets\images\bovine_potion.png" />
     <Content Include="assets\images\cash_food.png" />
+    <None Include="assets\images\dragon_potion.png" />
     <Content Include="assets\images\ele_earth_converter.png" />
     <Content Include="assets\images\ele_fire_converter.png" />
     <Content Include="assets\images\ele_water_converter.png" />
     <Content Include="assets\images\ele_wind_converter.png" />
     <Content Include="assets\images\fear_breeze.png" />
+    <None Include="assets\images\halohalo.png" />
+    <None Include="assets\images\flee_scroll.png" />
+    <None Include="assets\images\Glass_Of_Illusion.png" />
+    <None Include="assets\images\fusion.png" />
+    <None Include="assets\images\hom_avoid.png" />
     <Content Include="assets\images\impositio_manus.png" />
+    <None Include="assets\images\mental_potion.png" />
+    <None Include="assets\images\mandragora_howling.png" />
+    <None Include="assets\images\mindbreaker.png" />
+    <None Include="assets\images\kaahi.png" />
+    <None Include="assets\images\kaite.png" />
+    <None Include="assets\images\kaizel.png" />
+    <None Include="assets\images\kaupe.png" />
     <Content Include="assets\images\octocat2.png" />
+    <None Include="assets\images\spellbreaker.png" />
+    <None Include="assets\images\slow_cast.png" />
+    <None Include="assets\images\provoke.png" />
+    <None Include="assets\images\red_booster_potion.png" />
     <Content Include="assets\images\tk_mild_earth.png" />
     <Content Include="assets\images\tk_mild_fire.png" />
     <Content Include="assets\images\tk_mild_ghost.png" />
@@ -673,6 +736,7 @@
     <Content Include="assets\images\tk_mild_shadow.png" />
     <Content Include="assets\images\tk_mild_water.png" />
     <Content Include="assets\images\tk_mild_wind.png" />
+    <None Include="assets\images\vitata_potion.png" />
     <Content Include="logo-4rtools.ico" />
   </ItemGroup>
   <ItemGroup>

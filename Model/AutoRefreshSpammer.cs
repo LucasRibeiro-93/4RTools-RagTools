@@ -15,6 +15,8 @@ namespace _4RTools.Model
         private string ACTION_NAME = "AutoRefreshSpammer";
 
         public Dictionary<int, MacroKey> skillTimer = new Dictionary<int, MacroKey>();
+        [JsonIgnore]
+        public List<String> listCities { get; set; }
 
         private _4RThread thread1;
         private _4RThread thread2;
@@ -26,10 +28,9 @@ namespace _4RTools.Model
             Client roClient = ClientSingleton.GetClient();
             if (roClient != null)
             {
-                validadeThreads(this.thread1);
-                validadeThreads(this.thread2);
-                validadeThreads(this.thread3);
-                validadeThreads(this.thread4);
+                Stop();
+
+                if (this.listCities == null || this.listCities.Count == 0) this.listCities = LocalServerManager.GetListCities();
 
                 this.thread1 = new _4RThread((_) => AutoRefreshThreadExecution(roClient, skillTimer[1].delay, skillTimer[1].key));
                 this.thread2 = new _4RThread((_) => AutoRefreshThreadExecution(roClient, skillTimer[2].delay, skillTimer[2].key));
@@ -43,30 +44,50 @@ namespace _4RTools.Model
             }
         }
 
-        private void validadeThreads(_4RThread _4RThread)
-        {
-            if (_4RThread != null)
-            {
-                _4RThread.Stop(_4RThread);
-            }
-        }
-
         private int AutoRefreshThreadExecution(Client roClient, int delay, Key rKey)
         {
-            if (rKey != Key.None)
+            if (!hasBuff(roClient, EffectStatusIDs.ANTI_BOT) && !(roClient.ReadOpenChat() && ProfileSingleton.GetCurrent().UserPreferences.stopWithChat))
             {
-                Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), rKey.ToString()), 0);
+                string currentMap = roClient.ReadCurrentMap();
+                if (!ProfileSingleton.GetCurrent().UserPreferences.stopBuffsCity || this.listCities.Contains(currentMap) == false)
+                {
+                    if (rKey != Key.None)
+                    {
+                        Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), rKey.ToString()), 0);
+                    }
+                }
             }
             Thread.Sleep(delay * 1000);
             return 0;
         }
+        private bool hasBuff(Client c, EffectStatusIDs buff)
+        {
+            for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
+            {
+                uint currentStatus = c.CurrentBuffStatusCode(i);
+                if (currentStatus == (int)buff) { return true; }
+            }
+            return false;
+        }
 
         public void Stop()
         {
-            _4RThread.Stop(this.thread1);
-            _4RThread.Stop(this.thread2);
-            _4RThread.Stop(this.thread3);
-            _4RThread.Stop(this.thread4);
+            if (this.thread1 != null)
+            {
+                _4RThread.Stop(this.thread1);
+            }
+            if (this.thread2 != null)
+            {
+                _4RThread.Stop(this.thread2);
+            }
+            if (this.thread3 != null)
+            {
+                _4RThread.Stop(this.thread3);
+            }
+            if (this.thread4 != null)
+            {
+                _4RThread.Stop(this.thread4);
+            }
         }
 
         public string GetConfiguration()

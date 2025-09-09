@@ -12,6 +12,7 @@ namespace _4RTools.Model
     {
         public Key key { get; set; }
         public int delay { get; set; } = 50;
+        public bool hasClick { get; set; } = false;
 
         public MacroKey(Key key, int delay)
         {
@@ -56,7 +57,7 @@ namespace _4RTools.Model
     public class Macro : Action
     {
         public static string ACTION_NAME_SONG_MACRO = "SongMacro2.0";
-        public static string ACTION_NAME_MACRO_SWITCH = "MacroSwitch";
+        public static string ACTION_NAME_MACRO_SWITCH = "MacroSwitch2.0";
 
         public string actionName { get; set; }
         private _4RThread thread;
@@ -78,8 +79,11 @@ namespace _4RTools.Model
             {
                 chainConfigs[macroId - 1] = new ChainConfig(macroId);
             }
-            catch (Exception) { }
-            
+            catch (Exception ex)
+            {
+                var exception = ex;
+            }
+
         }
 
         public string GetActionName()
@@ -94,36 +98,46 @@ namespace _4RTools.Model
 
         private int MacroExecutionThread(Client roClient)
         {
-            foreach (ChainConfig chainConfig in this.chainConfigs)
+            if (!hasBuff(roClient, EffectStatusIDs.ANTI_BOT) && !(roClient.ReadOpenChat() && ProfileSingleton.GetCurrent().UserPreferences.stopWithChat))
             {
-                if (chainConfig.trigger != Key.None && Keyboard.IsKeyDown(chainConfig.trigger))
+                foreach (ChainConfig chainConfig in this.chainConfigs)
                 {
-                    Dictionary<string, MacroKey> macro = chainConfig.macroEntries;
-                    for (int i = 1; i <= macro.Count; i++)//Ensure to execute keys in Order
+                    if (chainConfig.trigger != Key.None && Keyboard.IsKeyDown(chainConfig.trigger))
                     {
-                        MacroKey macroKey = macro["in" + i + "mac" + chainConfig.id];
-                        if (macroKey.key != Key.None && i != 1)
+                        Dictionary<string, MacroKey> macro = chainConfig.macroEntries;
+                        for (int i = 1; i <= macro.Count; i++)//Ensure to execute keys in Order
                         {
-                            if(chainConfig.instrumentKey != Key.None)
+                            MacroKey macroKey = macro["in" + i + "mac" + chainConfig.id];
+                            if (macroKey.key != Key.None)
                             {
-                                //Press instrument key if exists.
-                                Keys instrumentKey = (Keys)Enum.Parse(typeof(Keys), chainConfig.instrumentKey.ToString());
-                                Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, instrumentKey, 0);
-                                Thread.Sleep(30);
+                                if (chainConfig.instrumentKey != Key.None)
+                                {
+                                    //Press instrument key if exists.
+                                    Keys instrumentKey = (Keys)Enum.Parse(typeof(Keys), chainConfig.instrumentKey.ToString());
+                                    Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, instrumentKey, 0);
+                                    Thread.Sleep(30);
+                                }
+
+                                Keys thisk = (Keys)Enum.Parse(typeof(Keys), macroKey.key.ToString());
+                                Thread.Sleep(macroKey.delay);
+                                Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, thisk, 0);
+
+                                if (macroKey.hasClick)
+                                {
+                                    Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_LBUTTONDOWN, 0, 0);
+                                    Thread.Sleep(1);
+                                    Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_LBUTTONUP, 0, 0);
+                                }
+
+                                if (chainConfig.daggerKey != Key.None)
+                                {
+                                    //Press instrument key if exists.
+                                    Keys daggerKey = (Keys)Enum.Parse(typeof(Keys), chainConfig.daggerKey.ToString());
+                                    Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, daggerKey, 0);
+                                    Thread.Sleep(30);
+                                }
+
                             }
-
-                            Keys thisk = (Keys)Enum.Parse(typeof(Keys), macroKey.key.ToString());
-                            Thread.Sleep(macroKey.delay);
-                            Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, thisk, 0);
-
-                            if(chainConfig.daggerKey != Key.None)
-                            {
-                                //Press instrument key if exists.
-                                Keys daggerKey = (Keys)Enum.Parse(typeof(Keys), chainConfig.daggerKey.ToString());
-                                Interop.PostMessage(roClient.process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, daggerKey, 0);
-                                Thread.Sleep(30);
-                            }
-
                         }
                     }
                 }
@@ -131,16 +145,21 @@ namespace _4RTools.Model
             Thread.Sleep(100);
             return 0;
         }
-
+        private bool hasBuff(Client c, EffectStatusIDs buff)
+        {
+            for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
+            {
+                uint currentStatus = c.CurrentBuffStatusCode(i);
+                if (currentStatus == (int)buff) { return true; }
+            }
+            return false;
+        }
         public void Start()
         {
             Client roClient = ClientSingleton.GetClient();
             if (roClient != null)
             {
-                if (this.thread != null)
-                {
-                    _4RThread.Stop(this.thread);
-                }
+                Stop();
                 this.thread = new _4RThread((_) => MacroExecutionThread(roClient));
                 _4RThread.Start(this.thread);
             }
@@ -148,7 +167,10 @@ namespace _4RTools.Model
 
         public void Stop()
         {
-            _4RThread.Stop(this.thread);
+            if (this.thread != null)
+            {
+                _4RThread.Stop(this.thread);
+            }
         }
     }
 }

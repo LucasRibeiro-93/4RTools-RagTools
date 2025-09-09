@@ -31,6 +31,7 @@ namespace _4RTools.Forms
             this.txtStatusToggleKey.KeyDown += new KeyEventHandler(FormUtils.OnKeyDown);
             this.txtStatusToggleKey.KeyPress += new KeyPressEventHandler(FormUtils.OnKeyPress);
             this.txtStatusToggleKey.TextChanged += new EventHandler(this.onStatusToggleKeyChange);
+
             this.txtStatusHealToggleKey.Text = ProfileSingleton.GetCurrent().UserPreferences.toggleStateHealKey;
             this.txtStatusHealToggleKey.KeyDown += new KeyEventHandler(FormUtils.OnKeyDown);
             this.txtStatusHealToggleKey.KeyPress += new KeyPressEventHandler(FormUtils.OnKeyPress);
@@ -56,21 +57,23 @@ namespace _4RTools.Forms
 
         public void Update(ISubject subject)
         {
-            if ((subject as Subject).Message.code == MessageCode.PROFILE_CHANGED)
+            switch ((subject as Subject).Message.code)
             {
-                Keys currentToggleKey = (Keys)Enum.Parse(typeof(Keys), ProfileSingleton.GetCurrent().UserPreferences.toggleStateKey);
-                KeyboardHook.RemoveDown(lastKey); //Remove last key hook to prevent toggle with last profile key used.
+                case MessageCode.PROFILE_CHANGED:
+                    Keys currentToggleKey = (Keys)Enum.Parse(typeof(Keys), ProfileSingleton.GetCurrent().UserPreferences.toggleStateKey);
+                    KeyboardHook.RemoveDown(lastKey); //Remove last key hook to prevent toggle with last profile key used.
 
-                this.txtStatusToggleKey.Text = currentToggleKey.ToString();
-                KeyboardHook.AddKeyDown(currentToggleKey, new KeyboardHook.KeyPressed(this.toggleStatus));
-                lastKey = currentToggleKey;
+                    this.txtStatusToggleKey.Text = currentToggleKey.ToString();
+                    KeyboardHook.AddKeyDown(currentToggleKey, new KeyboardHook.KeyPressed(this.toggleStatus));
+                    lastKey = currentToggleKey;
 
-                Keys currentHealToggleKey = (Keys)Enum.Parse(typeof(Keys), ProfileSingleton.GetCurrent().UserPreferences.toggleStateHealKey);
-                KeyboardHook.RemoveUp(healLastKey); //Remove last key hook to prevent toggle with last profile key used.
+                    Keys currentHealToggleKey = (Keys)Enum.Parse(typeof(Keys), ProfileSingleton.GetCurrent().UserPreferences.toggleStateHealKey);
+                    KeyboardHook.RemoveUp(healLastKey); //Remove last key hook to prevent toggle with last profile key used.
 
-                this.txtStatusHealToggleKey.Text = currentHealToggleKey.ToString();
-                KeyboardHook.AddKeyUp(currentHealToggleKey, new KeyboardHook.KeyPressed(this.toggleStatusHeal));
-                healLastKey = currentHealToggleKey;
+                    this.txtStatusHealToggleKey.Text = currentHealToggleKey.ToString();
+                    KeyboardHook.AddKeyUp(currentHealToggleKey, new KeyboardHook.KeyPressed(this.toggleStatusHeal));
+                    healLastKey = currentHealToggleKey;
+                    break;
             }
         }
 
@@ -95,7 +98,7 @@ namespace _4RTools.Forms
             {
                 this.btnStatusToggle.BackColor = Color.Red;
                 this.btnStatusToggle.Text = "OFF";
-                this.notifyIconTray.Icon = Resources._4RTools.ETCResource.logo_4rtools_off;
+                this.notifyIconTray.Icon = Resources._4RTools.ETCResource.TalesIcon_off;
                 this.subject.Notify(new Utils.Message(MessageCode.TURN_OFF, null));
                 this.lblStatusToggle.Text = "Press the key to start!";
                 this.lblStatusToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
@@ -108,7 +111,7 @@ namespace _4RTools.Forms
                 {
                     this.btnStatusToggle.BackColor = Color.Green;
                     this.btnStatusToggle.Text = "ON";
-                    this.notifyIconTray.Icon = Resources._4RTools.ETCResource.logo_4rtools_on;
+                    this.notifyIconTray.Icon = Resources._4RTools.ETCResource.TalesIcon_on;
                     this.subject.Notify(new Utils.Message(MessageCode.TURN_ON, null));
                     this.lblStatusToggle.Text = "Press the key to stop!";
                     this.lblStatusToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
@@ -131,7 +134,6 @@ namespace _4RTools.Forms
             {
                 this.btnStatusToggle.BackColor = Color.Red;
                 this.btnStatusToggle.Text = "OFF";
-                this.notifyIconTray.Icon = Resources._4RTools.ETCResource.logo_4rtools_off;
                 this.subject.Notify(new Utils.Message(MessageCode.TURN_OFF, null));
                 this.lblStatusToggle.Text = "Press the key to start!";
                 this.lblStatusToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(155)))), ((int)(((byte)(164)))));
@@ -210,5 +212,6 @@ namespace _4RTools.Forms
             // Close the form, which closes the application.
             this.subject.Notify(new Utils.Message(MessageCode.SHUTDOWN_APPLICATION, null));
         }
+
     }
 }

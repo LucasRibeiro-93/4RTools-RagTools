@@ -24,6 +24,8 @@ namespace _4RTools.Model
         public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
         public Key tiMode { get; set; } = 0;
+        public Key priorityKey { get; set; } = 0;
+        public int priorityDelay { get; set; } = 50;
 
         public string GetActionName()
         {
@@ -37,18 +39,27 @@ namespace _4RTools.Model
 
         private int CustomExecutionThread(Client roClient)
         {
-
-            var TiMode = ProfileSingleton.GetCurrent().Custom.tiMode;
-            if (!TiMode.Equals(Key.None) && Keyboard.IsKeyDown(TiMode))
+            if (!hasBuff(roClient, EffectStatusIDs.ANTI_BOT) && !(roClient.ReadOpenChat() && ProfileSingleton.GetCurrent().UserPreferences.stopWithChat))
             {
-                _AHKTransferBoost(roClient, new KeyConfig(TiMode, true), (Keys)Enum.Parse(typeof(Keys), TiMode.ToString()));
-                return 0;
+                var TiMode = ProfileSingleton.GetCurrent().Custom.tiMode;
+                if (!TiMode.Equals(Key.None) && Keyboard.IsKeyDown(TiMode))
+                {
+                    _AHKTransferBoost(roClient, new KeyConfig(TiMode, true), (Keys)Enum.Parse(typeof(Keys), TiMode.ToString()));
+                    return 0;
+                }
             }
-            
             Thread.Sleep(100);
             return 0;
         }
-
+        private bool hasBuff(Client c, EffectStatusIDs buff)
+        {
+            for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
+            {
+                uint currentStatus = c.CurrentBuffStatusCode(i);
+                if (currentStatus == (int)buff) { return true; }
+            }
+            return false;
+        }
         private void _AHKTransferBoost(Client roClient, KeyConfig config, Keys thisk)
         {
             Func<int, int> send_click;
@@ -77,10 +88,7 @@ namespace _4RTools.Model
             Client roClient = ClientSingleton.GetClient();
             if (roClient != null)
             {
-                if (this.thread != null)
-                {
-                    _4RThread.Stop(this.thread);
-                }
+                Stop();
                 this.thread = new _4RThread((_) => CustomExecutionThread(roClient));
                 _4RThread.Start(this.thread);
             }
@@ -88,7 +96,10 @@ namespace _4RTools.Model
 
         public void Stop()
         {
-            _4RThread.Stop(this.thread);
+            if (this.thread != null)
+            {
+                _4RThread.Stop(this.thread);
+            }
         }
     }
 }

@@ -28,13 +28,15 @@ namespace _4RTools.Model
                     profile.AutopotYgg = JsonConvert.DeserializeObject<Autopot>(Profile.GetByAction(rawObject, profile.AutopotYgg));
                     profile.StatusRecovery = JsonConvert.DeserializeObject<StatusRecovery>(Profile.GetByAction(rawObject, profile.StatusRecovery));
                     profile.AutoRefreshSpammer = JsonConvert.DeserializeObject<AutoRefreshSpammer>(Profile.GetByAction(rawObject, profile.AutoRefreshSpammer));
-                    profile.Autobuff = JsonConvert.DeserializeObject<AutoBuff>(Profile.GetByAction(rawObject, profile.Autobuff));
+                    profile.AutobuffSkill = JsonConvert.DeserializeObject<AutoBuffSkill>(Profile.GetByAction(rawObject, profile.AutobuffSkill));
+                    profile.AutobuffStuff = JsonConvert.DeserializeObject<AutoBuffStuff>(Profile.GetByAction(rawObject, profile.AutobuffStuff));
                     profile.SongMacro = JsonConvert.DeserializeObject<Macro>(Profile.GetByAction(rawObject, profile.SongMacro));
                     profile.AtkDefMode = JsonConvert.DeserializeObject<ATKDEFMode>(Profile.GetByAction(rawObject, profile.AtkDefMode));
                     profile.MacroSwitch = JsonConvert.DeserializeObject<Macro>(Profile.GetByAction(rawObject, profile.MacroSwitch));
                     profile.Custom = JsonConvert.DeserializeObject<Custom>(Profile.GetByAction(rawObject, profile.Custom));
                     profile.DebuffsRecovery = JsonConvert.DeserializeObject<DebuffsRecovery>(Profile.GetByAction(rawObject, profile.DebuffsRecovery));
                     profile.AutoSwitch = JsonConvert.DeserializeObject<AutoSwitch>(Profile.GetByAction(rawObject, profile.AutoSwitch));
+                    profile.AutoSwitchHeal = JsonConvert.DeserializeObject<AutoSwitchHeal>(Profile.GetByAction(rawObject, profile.AutoSwitchHeal));
                     profile.OverlayCanvas = JsonConvert.DeserializeObject<OverlayCanvas>(Profile.GetByAction(rawObject, new OverlayCanvas()));
                 }
             }
@@ -42,6 +44,14 @@ namespace _4RTools.Model
                 throw new Exception("Houve um problema ao carregar o perfil. Delete a pasta Profiles e tente novamente.");   
             }
         }
+        public static void ClearProfile(string profileName)
+        {
+            if (profileName != profile.Name)
+            {
+                profile = new Profile(profileName);
+            }
+        }
+
 
         public static void Create(string profileName)
         {
@@ -49,6 +59,7 @@ namespace _4RTools.Model
 
             if (!File.Exists(jsonFileName))
             {
+                ClearProfile(profileName);
                 if (!Directory.Exists(AppConfig.ProfileFolder)) { Directory.CreateDirectory(AppConfig.ProfileFolder); }
                 FileStream fs = File.Create(jsonFileName);
                 fs.Close();
@@ -56,6 +67,7 @@ namespace _4RTools.Model
                 Profile profile = new Profile(profileName);
                 string output = JsonConvert.SerializeObject(profile, Formatting.Indented);
                 File.WriteAllText(jsonFileName, output);
+
             }
 
             ProfileSingleton.Load(profileName);
@@ -149,7 +161,8 @@ namespace _4RTools.Model
         public Autopot Autopot { get; set; }
         public Autopot AutopotYgg { get; set; }
         public AutoRefreshSpammer AutoRefreshSpammer { get; set; }
-        public AutoBuff Autobuff { get; set; }
+        public AutoBuffSkill AutobuffSkill { get; set; }
+        public AutoBuffStuff AutobuffStuff { get; set; }
         public StatusRecovery StatusRecovery { get; set; }
         public DebuffsRecovery DebuffsRecovery { get; set; }
         public Macro SongMacro { get; set;}
@@ -158,7 +171,7 @@ namespace _4RTools.Model
         public Custom Custom { get; set; }
         public ATKDEFMode AtkDefMode { get; set; }
         public AutoSwitch AutoSwitch { get; set; }
-        
+        public AutoSwitchHeal AutoSwitchHeal { get; set; }
         public OverlayCanvas OverlayCanvas { get; set; }
 
         public Profile(string name)
@@ -170,14 +183,16 @@ namespace _4RTools.Model
             this.Autopot = new Autopot(Autopot.ACTION_NAME_AUTOPOT);
             this.AutopotYgg = new Autopot(Autopot.ACTION_NAME_AUTOPOT_YGG);
             this.AutoRefreshSpammer = new AutoRefreshSpammer();
-            this.Autobuff = new AutoBuff();
+            this.AutobuffSkill = new AutoBuffSkill(AutoBuffSkill.ACTION_NAME_AUTOBUFFSKILL);
+            this.AutobuffStuff = new AutoBuffStuff(AutoBuffStuff.ACTION_NAME_AUTOBUFFSTUFF);
             this.StatusRecovery = new StatusRecovery();
             this.SongMacro = new Macro(Macro.ACTION_NAME_SONG_MACRO,MacroSongForm.TOTAL_MACRO_LANES_FOR_SONGS);
             this.MacroSwitch = new Macro(Macro.ACTION_NAME_MACRO_SWITCH, MacroSwitchForm.TOTAL_MACRO_LANES);
-            this.AtkDefMode = new ATKDEFMode();
+            this.AtkDefMode = new ATKDEFMode(ATKDEFForm.TOTAL_ATKDEF_LANES);
             this.DebuffsRecovery = new DebuffsRecovery();
             this.Custom = new Custom();
             this.AutoSwitch = new AutoSwitch();
+            this.AutoSwitchHeal = new AutoSwitchHeal();
             this.OverlayCanvas = new OverlayCanvas();
         }
 

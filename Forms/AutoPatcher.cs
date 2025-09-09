@@ -40,17 +40,21 @@ namespace _4RTools.Forms
             //List[1] = Url
             try
             {
-                String oldFileName = "4RTools_old.exe";
-                String sourceFileName = "4RTools.exe";
+                String oldFileName = "TalesTools_old.exe";
+                String old4rtoolsFileName = "4RTools_old.exe";
+                String sourceFileName = "TalesTools.exe";
+                File.Delete(old4rtoolsFileName); //Delete old R4Tools
                 File.Delete(oldFileName); //Delete old R4Tools
                 //Fetch Github latest Tag
                 client.Timeout = TimeSpan.FromSeconds(5);
                 client.DefaultRequestHeaders.Add("User-Agent", "request");
+
                 string latestVersion = await client.GetStringAsync(AppConfig._4RLatestVersionURL);
                 JObject obj = JsonConvert.DeserializeObject<JObject>(latestVersion);
 
                 string tag = obj["name"].ToString(); //Tag Name
 
+                #region comment this for no att versions
                 if (tag != AppConfig.Version)
                 {
                     string downloadUrl = obj["assets"][0]["browser_download_url"].ToString(); //Latest download url
@@ -65,11 +69,11 @@ namespace _4RTools.Forms
                     File.Delete(fileName); //Delete .rar file downloaded
                     Environment.Exit(0);
                 }
-
+                #endregion
             }
             finally
             {
-                new ClientUpdaterForm().Show();
+                new ClientUpdaterForm();
                 Hide();
             }
         }
@@ -84,7 +88,8 @@ namespace _4RTools.Forms
 
         void _4RTools_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate {
+            this.BeginInvoke((MethodInvoker)delegate
+            {
                 double bytesIn = double.Parse(e.BytesReceived.ToString());
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
                 double percentage = bytesIn / totalBytes * 100;

@@ -27,7 +27,7 @@ namespace _4RTools.Forms
             skillContainers.Add(new BuffContainer(this.NinjaSkillsGP, Buff.GetNinjaSkills()));
             skillContainers.Add(new BuffContainer(this.GunsSkillsGP, Buff.GetGunsSkills()));
 
-            new BuffRenderer(skillContainers, toolTip1).doRender();
+            new BuffRenderer(skillContainers, toolTip1, ProfileSingleton.GetCurrent().AutobuffSkill.actionName, subject).doRender();
             subject.Attach(this);
 
         }
@@ -37,9 +37,35 @@ namespace _4RTools.Forms
             switch ((subject as Subject).Message.code)
             {
                 case MessageCode.PROFILE_CHANGED:
-                    BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().Autobuff.buffMapping), this);
+                    BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().AutobuffSkill.buffMapping), this);
+                    this.numericDelay.Value = ProfileSingleton.GetCurrent().AutobuffSkill.delay;
+                    break;
+                case MessageCode.TURN_OFF:
+                    ProfileSingleton.GetCurrent().AutobuffSkill.Stop();
+                    break;
+                case MessageCode.TURN_ON:
+                    ProfileSingleton.GetCurrent().AutobuffSkill.Start();
                     break;
             }
+        }
+
+        private void btnResetAutobuff_Click(object sender, EventArgs e)
+        {
+            ProfileSingleton.GetCurrent().AutobuffSkill.ClearKeyMapping();
+            ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().AutobuffSkill);
+            BuffRenderer.doUpdate(new Dictionary<EffectStatusIDs, Key>(ProfileSingleton.GetCurrent().AutobuffSkill.buffMapping), this);
+            this.numericDelay.Value = 100;
+        }
+
+        private void numericDelay_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ProfileSingleton.GetCurrent().AutobuffSkill.delay = Convert.ToInt16(this.numericDelay.Value);
+                ProfileSingleton.SetConfiguration(ProfileSingleton.GetCurrent().AutobuffSkill);
+                this.ActiveControl = null;
+            }
+            catch { }
         }
     }
 }

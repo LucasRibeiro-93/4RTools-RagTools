@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using _4RTools.Utils;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace _4RTools.Model
 {
@@ -18,10 +19,15 @@ namespace _4RTools.Model
         public const string nextItem = "NEXTITEM";
 
         private _4RThread thread;
-        public int delay { get; set; } = 1;
+        public int delay { get; set; } = 500;
+        public int switchEquipDelay { get; set; } = 3000;
         public Dictionary<EffectStatusIDs, Key> buffMapping = new Dictionary<EffectStatusIDs, Key>();
         public List<AutoSwitchConfig> autoSwitchMapping = new List<AutoSwitchConfig>();
+        public List<AutoSwitchConfig> autoSwitchGenericMapping = new List<AutoSwitchConfig>();
 
+        public List<EffectStatusIDs> autoSwitchOrder { get; set; } = new List<EffectStatusIDs>();
+        [JsonIgnore]
+        public List<String> listCities { get; set; }
 
         public class AutoSwitchConfig
         {
@@ -29,6 +35,31 @@ namespace _4RTools.Model
             public Key itemKey { get; set; }
             public Key skillKey { get; set; }
             public Key nextItemKey { get; set; }
+
+            public AutoSwitchConfig(EffectStatusIDs id, Key key, String type = null)
+            {
+                this.skillId = id;
+                if (type != null)
+                {
+                    switch (type)
+                    {
+                        case item:
+                            this.itemKey = key;
+                            break;
+
+                        case skill:
+                            this.skillKey = key;
+                            break;
+
+                        case nextItem:
+                            this.nextItemKey = key;
+                            break;
+                    }
+
+                }
+            }
+
+
         }
 
         public void Start()
@@ -36,26 +67,58 @@ namespace _4RTools.Model
             Client roClient = ClientSingleton.GetClient();
             if (roClient != null)
             {
-                if (this.thread != null)
-                {
-                    _4RThread.Stop(this.thread);
-                }
+                Stop();
+                if (this.listCities == null || this.listCities.Count == 0) this.listCities = GlobalVariablesHelper.CityList;
                 this.thread = AutoSwitchThread(roClient);
                 _4RThread.Start(this.thread);
             }
         }
 
+
         public _4RThread AutoSwitchThread(Client c)
         {
             bool equipVajra = false;
             int contVajra = 0;
+            int contPet = 0;
             bool procVajra = false;
-            _4RThread autobuffItemThread = new _4RThread(_ =>
+            List<EffectStatusIDs> effectStatusProcMapping = new List<EffectStatusIDs>
+            {
+                EffectStatusIDs.PROVOKE,
+                EffectStatusIDs.OVERTHRUST,
+                EffectStatusIDs.RECOGNIZEDSPELL,
+                EffectStatusIDs.GN_CARTBOOST,
+                EffectStatusIDs.MINDBREAKER
+            };
+            var currentPet = EffectStatusIDs.PROVOKE;
+            bool equipedPet = false;
+            bool procPet = true;
+            _4RThread autoSwitchThread = new _4RThread(_ =>
+            {
+                procVajra = false;
+                List<AutoSwitchConfig> skillClone = new List<AutoSwitchConfig>(this.autoSwitchMapping.Where(x => x.itemKey != Key.None));
+                List<AutoSwitchConfig> skillCloneGeneric = new List<AutoSwitchConfig>(this.autoSwitchGenericMapping.Where(x => x.itemKey != Key.None));
+                string currentMap = c.ReadCurrentMap();
+                bool hasAntiBot = hasBuff(c, EffectStatusIDs.ANTI_BOT);
+                bool stopBuffsCity = ProfileSingleton.GetCurrent().UserPreferences.stopBuffsCity;
+                bool isInCityList = this.listCities.Contains(currentMap);
+                bool hasOpenChat = c.ReadOpenChat();
+                bool stopOpenChat = ProfileSingleton.GetCurrent().UserPreferences.stopWithChat;
+                var autoSwitchHeal = ProfileSingleton.GetCurrent().AutoSwitchHeal;
+                bool canSwitch = !hasAntiBot
+                && !(hasOpenChat && stopOpenChat)
+                && !(stopBuffsCity && isInCityList);
+
+                if (KeyboardHookHelper.HandlePriorityKey())
+                    return 0;
+
+                if (canSwitch)
                 {
-                    procVajra = false;
-
-                    List<AutoSwitchConfig> skillClone = new List<AutoSwitchConfig>(this.autoSwitchMapping);
-
+                    if (c.IsSpBelow(ProfileSingleton.GetCurrent().AutoSwitchHeal.spPercent) && c.IsHpAbove(10))
+                    {
+                        switchPet();
+                        equipedPet = false;
+                        procPet = true;
+                    }
                     for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
                     {
                         uint currentStatus = c.CurrentBuffStatusCode(i);
@@ -64,66 +127,94 @@ namespace _4RTools.Model
 
                         EffectStatusIDs status = (EffectStatusIDs)currentStatus;
 
+                        if (effectStatusProcMapping.Exists(x => x == status) && status == currentPet)
+                        {
+                            if (equipedPet)
+                            {
+                                equipedPet = false;
+                                this.equipNextItem(autoSwitchMapping.FirstOrDefault(x => x.skillId == status).nextItemKey);
+                                procPet = true;
+                            }
+                        }
+
                         if (autoSwitchMapping.Exists(x => x.skillId == status))
                         {
                             skillClone = skillClone.Where(skill => skill.skillId != status).ToList();
                         }
 
+                        if (autoSwitchGenericMapping.Exists(x => x.skillId == status))
+                        {
+                            skillCloneGeneric = skillCloneGeneric.Where(skill => skill.skillId != status).ToList();
+                        }
+
                         if (status == EffectStatusIDs.THURISAZ || status == EffectStatusIDs.FIGHTINGSPIRIT)
                         {
-                            if (equipVajra == true)
+
+                            if (equipVajra)
                             {
                                 equipVajra = false;
-                                this.equipNextItem(autoSwitchMapping.FirstOrDefault(x => x.skillId == EffectStatusIDs.THURISAZ || x.skillId == EffectStatusIDs.FIGHTINGSPIRIT).nextItemKey);
+                                this.equipNextItem(autoSwitchMapping.FirstOrDefault(x => x.skillId == EffectStatusIDs.THURISAZ).nextItemKey);
                             }
                             skillClone = validadeVajraSkills(skillClone, status);
                             procVajra = true;
                         }
-
                     }
+                    var order = ProfileSingleton.GetCurrent().AutoSwitch.autoSwitchOrder;
+                    skillClone.AddRange(skillCloneGeneric);
+
+                    skillClone = skillClone
+                    .OrderBy(p => order.IndexOf(p.skillId) == -1 ? int.MaxValue : order.IndexOf(p.skillId))
+                    .ToList();
+
+                    skillClone = skillClone.Where(p => p == skillClone.FirstOrDefault() || !order.Contains(p.skillId)).ToList();
 
                     foreach (var skill in skillClone)
                     {
-                        if (skill.skillId == EffectStatusIDs.CRAZY_UPROAR && c.ReadCurrentSp() > 8)
+                        if (effectStatusProcMapping.Contains(skill.skillId) && skill.itemKey != Key.None)
                         {
-                            this.useAutobuff(skill.itemKey, skill.skillKey);
-                            Thread.Sleep(100);
-                            this.equipNextItem(skill.nextItemKey);
-                            equipVajra = false;
-                            Thread.Sleep(3000);
-                        }
+                            contPet++;
 
-                        if (skill.skillId == EffectStatusIDs.THURISAZ || skill.skillId == EffectStatusIDs.FIGHTINGSPIRIT)
+                            preventErrorsPet(ref contPet, ref equipedPet, ref procPet, skill);
+
+                            if (!equipedPet && procPet)
+                            {
+                                currentPet = skill.skillId;
+                                Thread.Sleep(switchEquipDelay);
+                                this.useAutobuff(skill.itemKey, skill.skillKey);
+                                equipedPet = true;
+                                procPet = false;
+                            }
+                        }
+                        else if (skill.skillId == EffectStatusIDs.THURISAZ || skill.skillId == EffectStatusIDs.FIGHTINGSPIRIT)
                         {
                             contVajra++;
 
-                            if (contVajra > 100) { contVajra = 0; equipVajra = false; }
-
-                            if (procVajra)
-                            {
-                                equipVajra = false;
-                                this.equipNextItem(skill.nextItemKey);
-                                break;
-                            }
+                            if (contVajra > 50) { contVajra = 0; equipVajra = false; }
 
                             if (!equipVajra)
                             {
-                                Thread.Sleep(100);
+                                Thread.Sleep(delay);
                                 this.useAutobuff(skill.itemKey, skill.skillKey);
                                 equipVajra = true;
                             }
-
                         }
-
+                        else if (c.ReadCurrentSp() > 8)
+                        {
+                            this.useAutobuff(skill.itemKey, skill.skillKey);
+                            Thread.Sleep(switchEquipDelay);
+                            this.equipNextItem(skill.nextItemKey);
+                            equipVajra = false;
+                            Thread.Sleep(switchEquipDelay);
+                        }
                     }
-                    Thread.Sleep(300);
-                    return 0;
+                }
+                Thread.Sleep(delay);
+                return 0;
 
-                });
+            });
 
-            return autobuffItemThread;
+            return autoSwitchThread;
         }
-
         private List<AutoSwitchConfig> validadeVajraSkills(List<AutoSwitchConfig> skillClone, EffectStatusIDs status)
         {
             if (status == EffectStatusIDs.THURISAZ)
@@ -145,42 +236,26 @@ namespace _4RTools.Model
             return skillClone;
         }
 
-        public void AddKeyToBuff(EffectStatusIDs status, Key key, string type)
+        private bool hasBuff(Client c, EffectStatusIDs buff)
         {
-
-            AutoSwitchConfig config = new AutoSwitchConfig();
-            if (autoSwitchMapping.Exists(x => x.skillId == status))
+            for (int i = 1; i < Constants.MAX_BUFF_LIST_INDEX_SIZE; i++)
             {
-                config = autoSwitchMapping.FirstOrDefault(x => x.skillId == status);
+                uint currentStatus = c.CurrentBuffStatusCode(i);
+                if (currentStatus == (int)buff) { return true; }
             }
-            config.skillId = status;
+            return false;
+        }
 
-            if (FormUtils.IsValidKey(key))
+        private void preventErrorsPet(ref int contPet, ref bool equipedPet, ref bool procPet, AutoSwitchConfig skill)
+        {
+            if (contPet > 100)
             {
-                switch (type)
-                {
-                    case item:
-                        config.itemKey = key;
-                        break;
-
-                    case skill:
-                        config.skillKey = key;
-                        break;
-
-                    case nextItem:
-                        config.nextItemKey = key;
-                        break;
-                }
-
-            }
-            if (autoSwitchMapping.Exists(x => x.skillId == status))
-            {
-                autoSwitchMapping = autoSwitchMapping.Where(skill => skill.skillId != status).ToList();
-            }
-
-            if (FormUtils.IsValidKey(key))
-            {
-                autoSwitchMapping.Add(config);
+                contPet = 0;
+                equipedPet = false;
+                procPet = true;
+                var key = autoSwitchMapping.FirstOrDefault(x => x.skillId == skill.skillId).nextItemKey != Key.None ? autoSwitchMapping.FirstOrDefault(x => x.skillId == skill.skillId).nextItemKey : autoSwitchMapping.FirstOrDefault(x => x.skillId == skill.skillId).itemKey;
+                this.equipNextItem(key);
+                Thread.Sleep(1000);
             }
         }
 
@@ -191,7 +266,10 @@ namespace _4RTools.Model
 
         public void Stop()
         {
-            _4RThread.Stop(this.thread);
+            if (this.thread != null)
+            {
+                _4RThread.Stop(this.thread);
+            }
         }
 
         public string GetConfiguration()
@@ -208,7 +286,7 @@ namespace _4RTools.Model
         {
             if ((item != Key.None) && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
                 Interop.PostMessage(ClientSingleton.GetClient().process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), item.ToString()), 0);
-            Thread.Sleep(100);
+            Thread.Sleep(switchEquipDelay);
             if ((skill != Key.None) && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
                 Interop.PostMessage(ClientSingleton.GetClient().process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), skill.ToString()), 0);
         }
@@ -217,6 +295,31 @@ namespace _4RTools.Model
         {
             if ((next != Key.None) && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
                 Interop.PostMessage(ClientSingleton.GetClient().process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), next.ToString()), 0);
+        }
+
+        public void SetAutoSwitchOrder(List<EffectStatusIDs> buffs)
+        {
+            this.autoSwitchOrder = buffs;
+        }
+
+        private void pressKey(Key key)
+        {
+            if ((key != Key.None) && !Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                Interop.PostMessage(ClientSingleton.GetClient().process.MainWindowHandle, Constants.WM_KEYDOWN_MSG_ID, (Keys)Enum.Parse(typeof(Keys), key.ToString()), 0);
+            }
+        }
+        private void switchPet()
+        {
+            pressKey(ProfileSingleton.GetCurrent().AutoSwitchHeal.itemKey);
+            Thread.Sleep(1500);
+            foreach (var i in Enumerable.Range(0, ProfileSingleton.GetCurrent().AutoSwitchHeal.qtdSkill))
+            {
+                pressKey(ProfileSingleton.GetCurrent().AutoSwitchHeal.skillKey);
+                Thread.Sleep(ProfileSingleton.GetCurrent().AutoSwitchHeal.switchDelay);
+            }
+            pressKey(ProfileSingleton.GetCurrent().AutoSwitchHeal.nextItemKey);
+            Thread.Sleep(ProfileSingleton.GetCurrent().AutoSwitch.switchEquipDelay);
         }
     }
 }

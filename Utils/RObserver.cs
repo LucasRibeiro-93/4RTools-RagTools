@@ -25,8 +25,11 @@ namespace _4RTools.Utils
         CLICK_ICON_TRAY,
         SERVER_LIST_CHANGED,
         TURN_HEAL_ON,
-        TURN_HEAL_OFF
-  }
+        TURN_HEAL_OFF,
+        ADDED_NEW_AUTOBUFF_SKILL,
+        CHANGED_AUTOSWITCH_SKILL,
+        ADDED_NEW_AUTOSWITCH_PETS,
+    }
 
     public class Message
     {

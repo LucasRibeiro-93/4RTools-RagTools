@@ -6,6 +6,7 @@ using System.IO;
 using _4RTools.Model;
 using _4RTools.Overlay;
 using _4RTools.Utils;
+using System.Collections.Generic;
 
 namespace _4RTools.Forms
 {
@@ -14,7 +15,7 @@ namespace _4RTools.Forms
 
         private Subject subject = new Subject();
         private string currentProfile;
-
+        List<ClientDTO> clients = new List<ClientDTO>();
         private ToggleApplicationStateForm frmToggleApplication = new ToggleApplicationStateForm();
         public Container()
         {
@@ -23,6 +24,9 @@ namespace _4RTools.Forms
             InitializeComponent();
             this.Text = AppConfig.Name + " - " + AppConfig.Version; // Window title
 
+            clients.AddRange(LocalServerManager.GetLocalClients()); //Load Local Servers First
+            LoadServers(clients);
+            GlobalVariablesHelper.CityList = LocalServerManager.GetListCities();
             //Container Configuration
             this.IsMdiContainer = true;
             SetBackGroundColorOfMDIForm();
@@ -42,7 +46,8 @@ namespace _4RTools.Forms
             SetATKDEFWindow();
             SetMacroSwitchWindow();
             SetAutoSwitchWindow();
-
+            SetAutoSwitchHealWindow();
+            SetConfigWindow();
             SetOverlayWindow();
             
             //TrackerSingleton.Instance().SendEvent("desktop_login", "page_view", "desktop_container_load");
@@ -149,6 +154,11 @@ namespace _4RTools.Forms
             Process.Start(AppConfig.Website);
         }
 
+        private void livepixLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(AppConfig.Livepix);
+        }
+
         private void profileCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.profileCB.Text != currentProfile)
@@ -158,7 +168,7 @@ namespace _4RTools.Forms
                     if (currentProfile != null) {
                         this.frmToggleApplication.TurnOFF();
                     }
-
+                    ProfileSingleton.ClearProfile(this.profileCB.Text);
                     ProfileSingleton.Load(this.profileCB.Text); //LOAD PROFILE
                     subject.Notify(new Utils.Message(MessageCode.PROFILE_CHANGED, null));
                     currentProfile = this.profileCB.Text.ToString();
@@ -200,6 +210,19 @@ namespace _4RTools.Forms
             if (this.WindowState == FormWindowState.Minimized) { this.Hide(); }
         }
 
+        private void LoadServers(List<ClientDTO> clients)
+        {
+            foreach (ClientDTO clientDTO in clients)
+            {
+                try
+                {
+                    ClientListSingleton.AddClient(new Client(clientDTO));
+                }
+                catch { }
+
+            }
+        }
+
         #region Frames
 
         public ToggleApplicationStateForm SetToggleApplicationStateWindow()
@@ -219,6 +242,15 @@ namespace _4RTools.Forms
             frm.MdiParent = this;
             frm.Show();
             addform(this.tabPageAutopot, frm);
+        }
+
+        public void SetAutoSwitchHealWindow()
+        {
+            AutoSwitchHealForm frm = new AutoSwitchHealForm(subject, false);
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.MdiParent = this;
+            frm.Show();
+            addform(this.tabPageAutoSwitchHeal, frm);
         }
 
         private void SetAutoBuffStatusWindow()
@@ -254,7 +286,7 @@ namespace _4RTools.Forms
         {
             CustomButtonForm form = new CustomButtonForm(subject);
             form.FormBorderStyle = FormBorderStyle.None;
-            form.Location = new Point(445, 220);
+            form.Location = new Point(360, 210);
             form.MdiParent = this;
             form.Show();
         }
@@ -339,6 +371,16 @@ namespace _4RTools.Forms
 
         }
 
+        public void SetConfigWindow()
+        {
+            ConfigForm frm = new ConfigForm(subject);
+            frm.FormBorderStyle = FormBorderStyle.None;
+            frm.Location = new Point(0, 65);
+            frm.MdiParent = this;
+            addform(this.tabConfig, frm);
+            frm.Show();
+        }
+        
         private void SetOverlayWindow()
         {
             var overlayEditor = new OverlayEditorForm(subject);
